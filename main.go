@@ -30,6 +30,7 @@ import (
 	_ "github.com/mj/opengyver/cmd/electrical"
 	_ "github.com/mj/opengyver/cmd/encode"
 	_ "github.com/mj/opengyver/cmd/epoch"
+	_ "github.com/mj/opengyver/cmd/extractframe"
 	_ "github.com/mj/opengyver/cmd/finance"
 	_ "github.com/mj/opengyver/cmd/generate"
 	_ "github.com/mj/opengyver/cmd/geo"

@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-03-28T20:07:46Z",
-  "trigger_command": "git add -A && git commit -m \"Fix Go 1.23 compatibility — downgrade x/sys, deepcopy, runewidth, nfp\\n\\nx/sys v0.41.0 required Go 1.24+. Downgraded to v0.29.0.\\nAlso downgraded: tiendc/go-deepcopy v1.5.0, mattn/go-runewidth v0.0.16,\\nclipperhouse/uax29 v2.1.0, xuri/nfp to 2024 version.\\ngo.mod pinned to go 1.23.5.\\n\\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>\" && git push 2>&1 | tail -3",
+  "timestamp": "2026-03-28T20:14:36Z",
+  "trigger_command": "git add -A && git commit -m \"Add trimVideo command — extract portions of video files\\n\\nTrim videos by start/end time or duration. Default: stream copy\\n(instant, lossless, same format). Use --codec to re-encode.\\nSupports all ffmpeg time formats (HH:MM:SS, seconds, ms).\\nOutput auto-named as input_trimmed.ext if -o not specified.\\n\\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>\" && git push 2>&1 | tail -3",
   "status": "completed",
-  "conclusion": "failure"
+  "conclusion": "success"
 }
