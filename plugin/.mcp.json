@@ -1,8 +1,8 @@
 {
   "mcpServers": {
     "opengyver": {
-      "command": "node",
-      "args": ["${CLAUDE_PLUGIN_ROOT}/mcp-server/dist/index.js"]
+      "command": "bash",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/mcp-server/start.sh"]
     }
   }
 }

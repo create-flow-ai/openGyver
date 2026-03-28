@@ -33,3 +33,20 @@ if kill -0 $PID 2>/dev/null; then
 {"id":"event-000020","type":"tool.bash","ts":"2026-03-28T21:47:06Z","state":"stopped","data":{"command":"find /Users/mj/.claude/plugins -name ".mcp.json" 2>/dev/null | while read f; do echo "=== $f ===" && cat "$f" | head -10; done"}}
 {"id":"event-000021","type":"tool.write","ts":"2026-03-28T21:47:18Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/plugin/.mcp.json"}}
 {"id":"event-000022","type":"tool.bash","ts":"2026-03-28T21:48:26Z","state":"stopped","data":{"command":"cp /Users/mj/work/openGyver/plugin/.mcp.json /Users/mj/.claude/plugins/cache/opengyver-marketplace/opengyver/1.0.0/.mcp.json && echo "Fixed""}}
+{"id":"event-000023","type":"tool.bash","ts":"2026-03-28T21:48:41Z","state":"stopped","data":{"command":"git add -A && git commit -m "Fix MCP config — use CLAUDE_PLUGIN_ROOT instead of PLUGIN_DIR
+
+Working Claude Code plugins use \${CLAUDE_PLUGIN_ROOT} for absolute
+paths. Changed from relative path with c"}}
+{"id":"event-000024","type":"tool.bash","ts":"2026-03-28T21:49:37Z","state":"stopped","data":{"command":"cat /Users/mj/.claude/plugins/cache/opengyver-marketplace/opengyver/1.0.0/.mcp.json"}}
+{"id":"event-000025","type":"tool.bash","ts":"2026-03-28T21:49:48Z","state":"stopped","data":{"command":"ls /Users/mj/.claude/plugins/cache/opengyver-marketplace/opengyver/1.0.0/mcp-server/dist/index.js 2>&1 && echo "EXISTS" || echo "MISSING""}}
+{"id":"event-000026","type":"tool.bash","ts":"2026-03-28T21:50:05Z","state":"stopped","data":{"command":"# Test with the absolute path that CLAUDE_PLUGIN_ROOT would resolve to
+PLUGIN_ROOT="/Users/mj/.claude/plugins/cache/opengyver-marketplace/opengyver/1.0.0"
+echo '{"jsonrpc":"2.0","method":"initialize","}}
+{"id":"event-000027","type":"tool.bash","ts":"2026-03-28T21:50:29Z","state":"stopped","data":{"command":"PLUGIN_ROOT="/Users/mj/.claude/plugins/cache/opengyver-marketplace/opengyver/1.0.0"
+(echo '{"jsonrpc":"2.0","method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo"}}
+{"id":"event-000028","type":"tool.write","ts":"2026-03-28T21:50:39Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/plugin/mcp-server/start.sh"}}
+{"id":"event-000029","type":"tool.bash","ts":"2026-03-28T21:50:51Z","state":"stopped","data":{"command":"chmod +x /Users/mj/work/openGyver/plugin/mcp-server/start.sh"}}
+{"id":"event-000030","type":"tool.write","ts":"2026-03-28T21:51:00Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/plugin/.mcp.json"}}
+{"id":"event-000031","type":"tool.bash","ts":"2026-03-28T21:51:15Z","state":"stopped","data":{"command":"# Also copy to cache and test
+cp /Users/mj/work/openGyver/plugin/.mcp.json /Users/mj/.claude/plugins/cache/opengyver-marketplace/opengyver/1.0.0/.mcp.json
+cp /Users/mj/work/openGyver/plugin/mcp-server"}}
