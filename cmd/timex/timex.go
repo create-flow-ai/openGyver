@@ -52,7 +52,15 @@ EXAMPLES:
   openGyver timex info "2024-01-15"`,
 }
 
+// brief controls abbreviated single-line output across all subcommands.
+var brief bool
+
+// jsonOut controls JSON output across all subcommands.
+var jsonOut bool
+
 func init() {
+	timexCmd.PersistentFlags().BoolVarP(&brief, "brief", "b", false, "output a single ISO 8601 line (for piping)")
+	timexCmd.PersistentFlags().BoolVarP(&jsonOut, "json", "j", false, "output as JSON")
 	cmd.Register(timexCmd)
 }
 

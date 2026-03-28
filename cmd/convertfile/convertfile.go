@@ -13,6 +13,8 @@ var (
 	output    string
 	sheet     string
 	delimiter string
+	quiet     bool
+	jsonOut   bool
 )
 
 var convertFileCmd = &cobra.Command{
@@ -131,7 +133,18 @@ func runConvertFile(c *cobra.Command, args []string) error {
 		return err
 	}
 
-	fmt.Printf("Converted %s → %s\n", inputPath, outputPath)
+	if jsonOut {
+		return cmd.PrintJSON(map[string]interface{}{
+			"success":       true,
+			"input":         inputPath,
+			"output":        outputPath,
+			"input_format":  inputFmt,
+			"output_format": outputFmt,
+		})
+	}
+	if !quiet {
+		fmt.Printf("Converted %s → %s\n", inputPath, outputPath)
+	}
 	return nil
 }
 
@@ -250,5 +263,7 @@ func init() {
 	convertFileCmd.Flags().StringVarP(&output, "output", "o", "", "output file path (default: input name with new extension)")
 	convertFileCmd.Flags().StringVar(&sheet, "sheet", "", "sheet name for XLSX/Numbers files (default: first sheet)")
 	convertFileCmd.Flags().StringVar(&delimiter, "delimiter", "", "CSV delimiter: comma, tab, semicolon, pipe, or any single character (default: comma)")
+	convertFileCmd.Flags().BoolVarP(&quiet, "quiet", "q", false, "suppress output messages (for piping)")
+	convertFileCmd.Flags().BoolVarP(&jsonOut, "json", "j", false, "output result as JSON")
 	cmd.Register(convertFileCmd)
 }

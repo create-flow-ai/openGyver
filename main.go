@@ -19,6 +19,7 @@ import (
 	_ "github.com/mj/opengyver/cmd/convertvideo"
 	_ "github.com/mj/opengyver/cmd/epoch"
 	_ "github.com/mj/opengyver/cmd/qr"
+	_ "github.com/mj/opengyver/cmd/stock"
 	_ "github.com/mj/opengyver/cmd/timex"
 	_ "github.com/mj/opengyver/cmd/togif"
 	_ "github.com/mj/opengyver/cmd/toico"

@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/mj/opengyver/cmd"
+	rootcmd "github.com/mj/opengyver/cmd"
 	"github.com/spf13/cobra"
 )
 
@@ -17,6 +17,8 @@ var (
 	abitrate   string
 	fps        string
 	codec      string
+	quiet      bool
+	jsonOut    bool
 )
 
 var supportedFormats = map[string]bool{
@@ -97,7 +99,17 @@ func runConvertVideo(c *cobra.Command, args []string) error {
 		return fmt.Errorf("ffmpeg error: %s\n%s", err, string(out))
 	}
 
-	fmt.Printf("Converted %s → %s\n", inputPath, output)
+	if jsonOut {
+		return rootcmd.PrintJSON(map[string]interface{}{
+			"success": true, "input": inputPath, "output": output,
+			"output_format": outExt, "resolution": resolution,
+			"video_bitrate": vbitrate, "audio_bitrate": abitrate,
+			"fps": fps, "codec": codec,
+		})
+	}
+	if !quiet {
+		fmt.Printf("Converted %s → %s\n", inputPath, output)
+	}
 	return nil
 }
 
@@ -120,5 +132,7 @@ func init() {
 	convertVideoCmd.Flags().StringVar(&abitrate, "abitrate", "", "audio bitrate (e.g. 128k, 192k, 320k)")
 	convertVideoCmd.Flags().StringVar(&fps, "fps", "", "frames per second (e.g. 24, 30, 60)")
 	convertVideoCmd.Flags().StringVar(&codec, "codec", "", "video codec (e.g. libx264, libx265, libvpx-vp9)")
-	cmd.Register(convertVideoCmd)
+	convertVideoCmd.Flags().BoolVarP(&quiet, "quiet", "q", false, "suppress output messages (for piping)")
+	convertVideoCmd.Flags().BoolVarP(&jsonOut, "json", "j", false, "output result as JSON")
+	rootcmd.Register(convertVideoCmd)
 }

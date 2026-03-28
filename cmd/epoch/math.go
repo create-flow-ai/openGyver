@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	rootcmd "github.com/mj/opengyver/cmd"
 	"github.com/spf13/cobra"
 )
 
@@ -36,6 +37,13 @@ Examples:
 		base := resolveBase(from)
 		result := base.AddDate(years, months, days+weeks*7).
 			Add(time.Duration(hours)*time.Hour + time.Duration(minutes)*time.Minute)
+		if jsonOut {
+			return rootcmd.PrintJSON(map[string]interface{}{
+				"operation": "add", "base_epoch": base.Unix(),
+				"result_epoch": result.Unix(), "result_epoch_ms": result.UnixMilli(),
+				"result_iso8601": result.UTC().Format("2006-01-02T15:04:05Z"),
+			})
+		}
 		printEpoch(result)
 		return nil
 	},
@@ -60,6 +68,13 @@ Examples:
 		base := resolveBase(from)
 		result := base.AddDate(-years, -months, -(days + weeks*7)).
 			Add(-time.Duration(hours)*time.Hour - time.Duration(minutes)*time.Minute)
+		if jsonOut {
+			return rootcmd.PrintJSON(map[string]interface{}{
+				"operation": "subtract", "base_epoch": base.Unix(),
+				"result_epoch": result.Unix(), "result_epoch_ms": result.UnixMilli(),
+				"result_iso8601": result.UTC().Format("2006-01-02T15:04:05Z"),
+			})
+		}
 		printEpoch(result)
 		return nil
 	},

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/mj/opengyver/cmd"
 	"github.com/spf13/cobra"
 )
 
@@ -42,6 +43,16 @@ Examples:
 		}
 
 		utc := t.UTC()
+		if brief {
+			fmt.Println(utc.Format("2006-01-02T15:04:05Z"))
+			return nil
+		}
+		if jsonOut {
+			return cmd.PrintJSON(map[string]interface{}{
+				"utc":   utc.Format("2006-01-02T15:04:05Z"),
+				"unix":  utc.Unix(),
+			})
+		}
 		fmt.Printf("UTC:       %s\n", utc.Format("2006-01-02T15:04:05Z"))
 		fmt.Printf("RFC 2822:  %s\n", utc.Format("Mon, 02 Jan 2006 15:04:05 -0700"))
 		fmt.Printf("Unix:      %d\n", utc.Unix())

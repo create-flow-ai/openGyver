@@ -5,6 +5,7 @@ import (
 	"math"
 	"time"
 
+	"github.com/mj/opengyver/cmd"
 	"github.com/spf13/cobra"
 )
 
@@ -50,6 +51,21 @@ Examples:
 		d := t2.Sub(t1)
 		if d < 0 {
 			d = -d
+		}
+
+		if brief {
+			fmt.Printf("%.0f\n", d.Seconds())
+			return nil
+		}
+
+		if jsonOut {
+			return cmd.PrintJSON(map[string]interface{}{
+				"from":          t1.Format("2006-01-02T15:04:05Z07:00"),
+				"to":            t2.Format("2006-01-02T15:04:05Z07:00"),
+				"total_seconds": d.Seconds(),
+				"total_hours":   d.Hours(),
+				"total_days":    d.Hours() / 24,
+			})
 		}
 
 		// Human breakdown

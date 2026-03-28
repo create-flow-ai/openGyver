@@ -11,6 +11,7 @@ import (
 
 var (
 	abbreviated bool
+	jsonOut     bool
 )
 
 var convertCmd = &cobra.Command{
@@ -84,11 +85,22 @@ func runConvert(c *cobra.Command, args []string) error {
 		result = convertByFactor(val, fromUnit, toUnit)
 	}
 
+	fromName := fromCat.Units[from].Name
 	toName := fromCat.Units[to].Name
+
+	if jsonOut {
+		return cmd.PrintJSON(map[string]interface{}{
+			"input_value":  val,
+			"input_unit":   fromName,
+			"output_value": result,
+			"output_unit":  toName,
+			"category":     fromCat.Name,
+		})
+	}
+
 	if abbreviated {
 		fmt.Printf("%s %s\n", formatNumber(result), toName)
 	} else {
-		fromName := fromCat.Units[from].Name
 		fmt.Printf("%s %s = %s %s\n",
 			formatNumber(val), fromName,
 			formatNumber(result), toName)
@@ -109,5 +121,6 @@ func formatNumber(v float64) string {
 
 func init() {
 	convertCmd.Flags().BoolVarP(&abbreviated, "abbreviated", "a", false, "output only the converted value and unit")
+	convertCmd.Flags().BoolVarP(&jsonOut, "json", "j", false, "output as JSON")
 	cmd.Register(convertCmd)
 }

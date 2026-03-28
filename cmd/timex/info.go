@@ -58,6 +58,11 @@ Examples:
 		startOfDay := time.Date(year, month, day, 0, 0, 0, 0, t.Location())
 		endOfDay := time.Date(year, month, day, 23, 59, 59, 999999999, t.Location())
 
+		if brief {
+			fmt.Println(t.Format("2006-01-02T15:04:05Z07:00"))
+			return nil
+		}
+
 		fmt.Printf("Input:          %s\n", args[0])
 		fmt.Printf("Parsed:         %s\n", t.Format("2006-01-02T15:04:05Z07:00"))
 		fmt.Println()

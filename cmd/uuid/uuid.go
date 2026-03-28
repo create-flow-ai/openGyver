@@ -13,6 +13,7 @@ var (
 	version   int
 	count     int
 	uppercase bool
+	jsonOut   bool
 )
 
 var uuidCmd = &cobra.Command{
@@ -40,6 +41,25 @@ Examples:
 }
 
 func runUUID(c *cobra.Command, args []string) error {
+	if jsonOut {
+		uuids := make([]string, 0, count)
+		for i := 0; i < count; i++ {
+			id, err := generate(version)
+			if err != nil {
+				return err
+			}
+			s := id.String()
+			if uppercase {
+				s = strings.ToUpper(s)
+			}
+			uuids = append(uuids, s)
+		}
+		return cmd.PrintJSON(map[string]interface{}{
+			"version": version,
+			"count":   count,
+			"uuids":   uuids,
+		})
+	}
 	for i := 0; i < count; i++ {
 		id, err := generate(version)
 		if err != nil {
@@ -69,5 +89,6 @@ func init() {
 	uuidCmd.Flags().IntVar(&version, "version", 4, "UUID version: 4 (random) or 6 (time-sorted)")
 	uuidCmd.Flags().IntVar(&count, "count", 1, "number of UUIDs to generate")
 	uuidCmd.Flags().BoolVar(&uppercase, "uppercase", false, "output in uppercase")
+	uuidCmd.Flags().BoolVarP(&jsonOut, "json", "j", false, "output as JSON")
 	cmd.Register(uuidCmd)
 }

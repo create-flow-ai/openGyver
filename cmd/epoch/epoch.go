@@ -9,9 +9,10 @@ import (
 )
 
 var (
-	ms bool
-	us bool
-	ns bool
+	ms      bool
+	us      bool
+	ns      bool
+	jsonOut bool
 )
 
 var epochCmd = &cobra.Command{
@@ -36,6 +37,14 @@ Examples:
 	Args: cobra.NoArgs,
 	RunE: func(c *cobra.Command, args []string) error {
 		now := time.Now()
+		if jsonOut {
+			return cmd.PrintJSON(map[string]interface{}{
+				"epoch":    now.Unix(),
+				"epoch_ms": now.UnixMilli(),
+				"epoch_ns": now.UnixNano(),
+				"iso8601":  now.UTC().Format("2006-01-02T15:04:05Z"),
+			})
+		}
 		printEpoch(now)
 		return nil
 	},
@@ -58,6 +67,7 @@ func init() {
 	epochCmd.PersistentFlags().BoolVar(&ms, "ms", false, "output in milliseconds")
 	epochCmd.PersistentFlags().BoolVar(&us, "us", false, "output in microseconds")
 	epochCmd.PersistentFlags().BoolVar(&ns, "ns", false, "output in nanoseconds")
+	epochCmd.PersistentFlags().BoolVarP(&jsonOut, "json", "j", false, "output as JSON")
 
 	epochCmd.AddCommand(addCmd)
 	epochCmd.AddCommand(subtractCmd)

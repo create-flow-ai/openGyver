@@ -25,6 +25,8 @@ var (
 	width   int
 	height  int
 	format  string
+	quiet   bool
+	jsonOut bool
 )
 
 var convertImageCmd = &cobra.Command{
@@ -112,8 +114,21 @@ func runConvertImg(c *cobra.Command, args []string) error {
 	}
 
 	bounds := img.Bounds()
-	fmt.Printf("Converted %s (%s) → %s (%s) [%dx%d]\n",
-		inputPath, inputFmt, outputPath, outFmt, bounds.Dx(), bounds.Dy())
+	if jsonOut {
+		return cmd.PrintJSON(map[string]interface{}{
+			"success":       true,
+			"input":         inputPath,
+			"output":        outputPath,
+			"input_format":  inputFmt,
+			"output_format": outFmt,
+			"width":         bounds.Dx(),
+			"height":        bounds.Dy(),
+		})
+	}
+	if !quiet {
+		fmt.Printf("Converted %s (%s) → %s (%s) [%dx%d]\n",
+			inputPath, inputFmt, outputPath, outFmt, bounds.Dx(), bounds.Dy())
+	}
 	return nil
 }
 
@@ -455,5 +470,7 @@ func init() {
 	convertImageCmd.Flags().IntVar(&width, "width", 0, "resize to this width (0 = keep original)")
 	convertImageCmd.Flags().IntVar(&height, "height", 0, "resize to this height (0 = keep original)")
 	convertImageCmd.Flags().StringVarP(&format, "format", "f", "", "override input format detection (png, jpeg, gif, bmp, tiff, webp, raw)")
+	convertImageCmd.Flags().BoolVarP(&quiet, "quiet", "q", false, "suppress output messages (for piping)")
+	convertImageCmd.Flags().BoolVarP(&jsonOut, "json", "j", false, "output result as JSON")
 	cmd.Register(convertImageCmd)
 }

@@ -10,6 +10,7 @@ Designed to be used standalone, or hooked into CI/CD pipelines, shell scripts, a
 
 - [Installation](#installation)
 - [Quick Start](#quick-start)
+- [Output Modes](#output-modes)
 - [Commands](#commands)
   - [archive — Create & Extract Archives](#archive)
   - [convert — Unit & Currency Conversions](#convert)
@@ -27,6 +28,7 @@ Designed to be used standalone, or hooked into CI/CD pipelines, shell scripts, a
   - [epoch — Unix Epoch Utilities](#epoch)
   - [timex — Time & Timezone Utilities](#timex)
   - [qr — QR Code Generator](#qr)
+  - [stock — Stock Ticker Lookup](#stock)
   - [uuid — UUID Generator](#uuid)
 - [Plugin Architecture](#plugin-architecture)
 - [Building from Source](#building-from-source)
@@ -55,6 +57,136 @@ openGyver epoch add --days 30             # epoch 30 days from now
 openGyver timex now --tz Asia/Tokyo       # current time in Tokyo
 openGyver qr "https://example.com"        # QR code in terminal
 openGyver uuid                            # random UUID v4
+```
+
+---
+
+## Output Modes
+
+Every command supports multiple output modes for different use cases:
+
+### JSON Output (`--json` / `-j`)
+
+All commands support `--json` / `-j` for structured JSON output — ideal for scripting, APIs, and piping into `jq`.
+
+**Text commands** return the full data as JSON:
+
+```bash
+openGyver convert -j 100 cm in
+```
+```json
+{
+  "input_value": 100,
+  "input_unit": "centimeter",
+  "output_value": 39.37,
+  "output_unit": "inch",
+  "category": "Length"
+}
+```
+
+```bash
+openGyver stock AAPL -j
+```
+```json
+{
+  "symbol": "AAPL",
+  "exchange": "NasdaqGS",
+  "currency": "USD",
+  "price": 248.80,
+  "change": -4.09,
+  "percent": -1.62,
+  "previous_close": 252.89,
+  "as_of": "2026-03-27T16:00:02-04:00"
+}
+```
+
+```bash
+openGyver epoch -j
+```
+```json
+{
+  "epoch": 1774701886,
+  "epoch_ms": 1774701886035,
+  "epoch_ns": 1774701886035389000,
+  "iso8601": "2026-03-28T12:44:46Z"
+}
+```
+
+```bash
+openGyver timex now -j
+```
+```json
+{
+  "timezone": "America/New_York",
+  "iso8601": "2026-03-28T08:44:46-04:00",
+  "rfc2822": "Sat, 28 Mar 2026 08:44:46 -0400",
+  "date": "2026-03-28",
+  "time": "08:44:46",
+  "unix": 1774701886,
+  "unix_ms": 1774701886124
+}
+```
+
+```bash
+openGyver uuid --count 2 -j
+```
+```json
+{
+  "version": 4,
+  "count": 2,
+  "uuids": ["0e54bca5-...", "d4ba1074-..."]
+}
+```
+
+**Binary/file commands** return conversion metadata as JSON:
+
+```bash
+openGyver convertImage photo.png -o photo.jpg -j
+```
+```json
+{
+  "success": true,
+  "input": "photo.png",
+  "output": "photo.jpg",
+  "input_format": "png",
+  "output_format": "jpeg",
+  "width": 1024,
+  "height": 768
+}
+```
+
+```bash
+openGyver convertFile data.csv -o data.xlsx -j
+```
+```json
+{
+  "success": true,
+  "input": "data.csv",
+  "output": "data.xlsx",
+  "input_format": "csv",
+  "output_format": "xlsx"
+}
+```
+
+### Abbreviated Output
+
+| Command | Flag | Example output |
+|---|---|---|
+| `convert` | `-a` | `39.37 inch` |
+| `stock` | `-f price` | `248.80` |
+| `stock` | `-f percent` | `-1.62` |
+| `timex *` | `-b` | `2026-03-28T08:44:46-04:00` |
+| `timex diff` | `-b` | `14428800` (seconds) |
+
+### Quiet Mode (`--quiet` / `-q`)
+
+File conversion commands support `-q` to suppress the "Converted X → Y" confirmation:
+
+```bash
+openGyver convertFile data.csv -o data.xlsx -q
+openGyver convertImage photo.png -o photo.jpg -q
+openGyver convertAudio song.wav -o song.mp3 -q
+openGyver convertVideo input.avi -o output.mp4 -q
 ```
 
 ---
@@ -988,6 +1120,85 @@ openGyver qr "some data" --invert
 
 ---
 
+### stock
+
+Look up current or historical stock prices from global markets. Uses Yahoo Finance data — no API key required.
+
+#### Usage
+
+```
+openGyver stock <ticker> [flags]
+```
+
+#### Arguments
+
+| Argument   | Required | Description                           |
+|------------|----------|---------------------------------------|
+| `<ticker>` | Yes      | Stock ticker symbol (e.g. AAPL, MSFT) |
+
+#### Flags
+
+| Flag         | Short | Type   | Default | Description                                  |
+|--------------|-------|--------|---------|----------------------------------------------|
+| `--date`     | `-d`  | string |         | Price on a specific date (YYYY-MM-DD)        |
+| `--from`     |       | string |         | Start date for range (YYYY-MM-DD)            |
+| `--to`       |       | string |         | End date for range (YYYY-MM-DD)              |
+| `--market`   | `-m`  | string |         | Target exchange (see market list below)      |
+| `--interval` |       | string | `1d`    | Data granularity: `1d`, `1wk`, `1mo`         |
+
+#### Supported Markets (--market flag)
+
+| Region   | Market names                                              |
+|----------|-----------------------------------------------------------|
+| US       | `nasdaq`, `nyse`, `us`                                    |
+| Korea    | `kosdaq`, `kospi`, `korea`                                |
+| Japan    | `tokyo`, `tse`, `japan`                                   |
+| UK       | `london`, `lse`, `uk`                                     |
+| China    | `shanghai`, `shenzhen`, `hongkong`, `hk`                  |
+| Europe   | `frankfurt`, `xetra`, `paris`, `euronext`, `amsterdam`, `swiss`, `six` |
+| Nordics  | `stockholm`, `oslo`, `copenhagen`, `helsinki`              |
+| Americas | `toronto`, `tsx`, `canada`, `brazil`, `bovespa`, `mexico` |
+| Asia     | `singapore`, `sgx`, `taiwan`, `twse`, `mumbai`, `nse`, `bse`, `jakarta`, `bangkok` |
+| Other    | `australia`, `asx`, `johannesburg`, `newzealand`          |
+
+Tickers can also use the Yahoo Finance suffix directly: `005930.KS`, `7203.T`, `SHEL.L`.
+
+#### Examples
+
+```bash
+# Current price
+openGyver stock AAPL
+openGyver stock TSLA
+openGyver stock GOOGL
+
+# Specific date
+openGyver stock AAPL --date 2024-01-15
+openGyver stock MSFT -d 2024-12-20
+
+# Historical range
+openGyver stock AAPL --from 2024-01-01 --to 2024-06-30
+openGyver stock AAPL --from 2024-01-01 --to 2024-12-31 --interval 1wk
+openGyver stock MSFT --from 2025-03-01 --to 2025-03-07
+
+# Global markets
+openGyver stock 005930 --market kospi        # Samsung (Korea)
+openGyver stock 035720 --market kosdaq       # Kakao (Korea)
+openGyver stock 7203 --market tokyo          # Toyota (Japan)
+openGyver stock SHEL --market london         # Shell (UK)
+openGyver stock 0700 --market hk             # Tencent (Hong Kong)
+openGyver stock SAP --market frankfurt       # SAP (Germany)
+openGyver stock MC --market paris            # LVMH (France)
+openGyver stock RY --market tsx              # Royal Bank (Canada)
+openGyver stock RELIANCE --market nse        # Reliance (India)
+openGyver stock 2330 --market twse           # TSMC (Taiwan)
+
+# Or use suffix directly
+openGyver stock 005930.KS
+openGyver stock 7203.T
+```
+
+---
+
 ### uuid
 
 Generate universally unique identifiers.
@@ -1050,6 +1261,7 @@ openGyver/
     epoch/                            # Unix epoch utilities
     timex/                            # Time & timezone utilities
     qr/                               # QR code generator
+    stock/                            # Stock ticker lookup (Yahoo Finance)
     uuid/                             # UUID generator
 ```
 

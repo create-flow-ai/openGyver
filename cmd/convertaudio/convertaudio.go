@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/mj/opengyver/cmd"
+	rootcmd "github.com/mj/opengyver/cmd"
 	"github.com/spf13/cobra"
 )
 
@@ -14,6 +14,8 @@ var (
 	output  string
 	bitrate string
 	sample  string
+	quiet   bool
+	jsonOut bool
 )
 
 var supportedFormats = map[string]bool{
@@ -82,7 +84,15 @@ func runConvertAudio(c *cobra.Command, args []string) error {
 		return fmt.Errorf("ffmpeg error: %s\n%s", err, string(out))
 	}
 
-	fmt.Printf("Converted %s → %s\n", inputPath, output)
+	if jsonOut {
+		return rootcmd.PrintJSON(map[string]interface{}{
+			"success": true, "input": inputPath, "output": output,
+			"output_format": outExt, "bitrate": bitrate, "sample_rate": sample,
+		})
+	}
+	if !quiet {
+		fmt.Printf("Converted %s → %s\n", inputPath, output)
+	}
 	return nil
 }
 
@@ -102,5 +112,7 @@ func init() {
 	convertAudioCmd.Flags().StringVarP(&output, "output", "o", "", "output file path (required)")
 	convertAudioCmd.Flags().StringVar(&bitrate, "bitrate", "", "audio bitrate (e.g. 128k, 192k, 320k)")
 	convertAudioCmd.Flags().StringVar(&sample, "sample", "", "sample rate in Hz (e.g. 44100, 48000)")
-	cmd.Register(convertAudioCmd)
+	convertAudioCmd.Flags().BoolVarP(&quiet, "quiet", "q", false, "suppress output messages (for piping)")
+	convertAudioCmd.Flags().BoolVarP(&jsonOut, "json", "j", false, "output result as JSON")
+	rootcmd.Register(convertAudioCmd)
 }

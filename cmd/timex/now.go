@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/mj/opengyver/cmd"
 	"github.com/spf13/cobra"
 )
 
@@ -43,6 +44,23 @@ Examples:
 			layout := resolveFormat(nowFormat)
 			fmt.Println(t.Format(layout))
 			return nil
+		}
+
+		if brief {
+			fmt.Println(t.Format("2006-01-02T15:04:05Z07:00"))
+			return nil
+		}
+
+		if jsonOut {
+			return cmd.PrintJSON(map[string]interface{}{
+				"timezone": t.Location().String(),
+				"iso8601":  t.Format("2006-01-02T15:04:05Z07:00"),
+				"rfc2822":  t.Format("Mon, 02 Jan 2006 15:04:05 -0700"),
+				"date":     t.Format("2006-01-02"),
+				"time":     t.Format("15:04:05"),
+				"unix":     t.Unix(),
+				"unix_ms":  t.UnixMilli(),
+			})
 		}
 
 		fmt.Printf("Timezone:  %s\n", t.Location())

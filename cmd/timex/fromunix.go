@@ -77,6 +77,11 @@ Examples:
 			return nil
 		}
 
+		if brief {
+			fmt.Println(t.Format("2006-01-02T15:04:05Z07:00"))
+			return nil
+		}
+
 		fmt.Printf("Timezone:  %s\n", t.Location())
 		fmt.Printf("ISO 8601:  %s\n", t.Format("2006-01-02T15:04:05Z07:00"))
 		fmt.Printf("RFC 2822:  %s\n", t.Format("Mon, 02 Jan 2006 15:04:05 -0700"))

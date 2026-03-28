@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/mj/opengyver/cmd"
 	"github.com/spf13/cobra"
 )
 
@@ -62,6 +63,19 @@ Examples:
 				return err
 			}
 			result = result.In(loc)
+		}
+
+		if brief {
+			fmt.Println(result.Format("2006-01-02T15:04:05Z07:00"))
+			return nil
+		}
+		if jsonOut {
+			return cmd.PrintJSON(map[string]interface{}{
+				"original": t.Format("2006-01-02T15:04:05Z07:00"),
+				"duration": args[1],
+				"result":   result.Format("2006-01-02T15:04:05Z07:00"),
+				"unix":     result.Unix(),
+			})
 		}
 
 		fmt.Printf("Original:  %s\n", t.Format("2006-01-02T15:04:05Z07:00"))
