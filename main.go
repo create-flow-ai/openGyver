@@ -49,6 +49,7 @@ import (
 	_ "github.com/mj/opengyver/cmd/timex"
 	_ "github.com/mj/opengyver/cmd/togif"
 	_ "github.com/mj/opengyver/cmd/toico"
+	_ "github.com/mj/opengyver/cmd/trimvideo"
 	_ "github.com/mj/opengyver/cmd/uuid"
 	_ "github.com/mj/opengyver/cmd/validate"
 	_ "github.com/mj/opengyver/cmd/weather"
