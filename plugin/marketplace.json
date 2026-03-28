@@ -1,13 +1,16 @@
 {
-  "version": 1,
+  "name": "opengyver-marketplace",
+  "owner": {
+    "name": "Create Flow AI"
+  },
   "plugins": [
     {
       "name": "opengyver",
       "description": "Swiss-army CLI for conversions, encoding, hashing, generation, and 180+ utilities — as native Claude Code tools",
       "version": "1.0.0",
       "source": {
-        "type": "github",
-        "repo": "create-flow-ai/openGyver",
+        "source": "git-subdir",
+        "url": "https://github.com/create-flow-ai/openGyver.git",
         "path": "plugin"
       }
     }
