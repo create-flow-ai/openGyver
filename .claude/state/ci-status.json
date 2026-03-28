@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-03-28T20:24:40Z",
-  "trigger_command": "git add -A && git commit -m \"Add unit tests, docs, and README entries for trimVideo and extractFrame\\n\\n- trimvideo: 8 tests (metadata, flags, shorthands, codec logic)\\n- extractframe: 12 tests (GIF frame extraction, all-frames, out-of-range,\\n  negative index, invalid file, APNG, unsupported format)\\n- docs/trimVideo.md and docs/extractFrame.md with full flag tables and examples\\n- README updated with both commands in Conversion Tools section\\n\\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>\" && git push 2>&1 | tail -3",
+  "timestamp": "2026-03-28T21:30:13Z",
+  "trigger_command": "git add plugin/marketplace.json && git commit -m \"Fix marketplace.json schema — add required name and owner fields\\n\\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>\" && git push 2>&1 | tail -3",
   "status": "completed",
   "conclusion": "success"
 }

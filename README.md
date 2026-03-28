@@ -183,14 +183,41 @@ openGyver convertFile data.csv -o data.xlsx -q # silent
 
 openGyver is available as a Claude Code plugin with native MCP tools. Once installed, Claude can call openGyver commands directly.
 
-### Install as Claude Code Skill
+### Install as Claude Code Plugin
+
+**Option A: MCP server (recommended)**
+
+Add to your Claude Code MCP config (`~/.claude/mcp.json`):
+
+```json
+{
+  "mcpServers": {
+    "opengyver": {
+      "command": "npx",
+      "args": ["-y", "mcp-server-opengyver"]
+    }
+  }
+}
+```
+
+Or clone and build locally:
 
 ```bash
-# Add the marketplace
-/plugin marketplace add https://raw.githubusercontent.com/create-flow-ai/openGyver/main/plugin/marketplace.json
+git clone https://github.com/create-flow-ai/openGyver.git
+cd openGyver/plugin/mcp-server
+npm install && npm run build
 
-# Install (auto-downloads binary + builds MCP server)
-/plugin install opengyver
+# Add to ~/.claude/mcp.json:
+# "opengyver": { "command": "node", "args": ["/path/to/plugin/mcp-server/dist/index.js"] }
+```
+
+**Option B: Skill file (simplest)**
+
+Copy the skill into your project:
+
+```bash
+mkdir -p .claude/skills
+cp -r openGyver/plugin/skills/opengyver .claude/skills/
 ```
 
 This gives Claude 16 native tools: `opengyver_encode`, `opengyver_hash`, `opengyver_convert`, `opengyver_json`, `opengyver_generate`, `opengyver_color`, `opengyver_time`, `opengyver_network`, `opengyver_dataformat`, `opengyver_validate`, `opengyver_format`, `opengyver_crypto`, `opengyver_weather`, `opengyver_stock`, `opengyver_math`, and `opengyver_run` (catch-all).
