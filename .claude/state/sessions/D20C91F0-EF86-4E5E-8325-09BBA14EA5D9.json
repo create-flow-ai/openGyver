@@ -1,0 +1,39 @@
+{
+  "session_id": "D20C91F0-EF86-4E5E-8325-09BBA14EA5D9",
+  "parent_session_id": null,
+  "state": "stopped",
+  "state_version": 1,
+  "started_at": "2026-03-28T14:46:30Z",
+  "updated_at": "2026-03-28T14:52:38Z",
+  "resume_token": "A2BD0D44-0E77-40C6-A222-DE3218DFB7CA",
+  "event_seq": 11,
+  "last_event_id": "event-000011",
+  "fork_count": 0,
+  "orchestration": {
+    "max_state_retries": 3,
+    "retry_backoff_seconds": 10
+  },
+  "cwd": "/Users/mj/work/openGyver",
+  "project_name": "openGyver",
+  "prompt_seq": 1,
+  "git": {
+    "branch": "main",
+    "uncommitted_changes": 1,
+    "last_commit": "97aeb5f"
+  },
+  "plans": {
+    "exists": false,
+    "last_modified": 0,
+    "wip_tasks": 0,
+    "todo_tasks": 0,
+    "pending_tasks": 0,
+    "completed_tasks": 0
+  },
+  "changes_this_session": [],
+  "intent": "literal",
+  "last_message_length": 483,
+  "last_message_hash": "834d5ca95fb18c48",
+  "ended_at": "2026-03-28T14:52:38Z",
+  "duration_minutes": -413,
+  "memory_logged": true
+}

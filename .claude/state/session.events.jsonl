@@ -1,0 +1,102 @@
+{"type":"session.start","ts":"2026-03-28T14:42:54Z","state":"initialized","data":{"cc_session_id":"27c550b4-b116-489d-9077-30c5c885cf55","note":"no_archive_found"}}
+{"id":"event-000001","type":"session.resume","ts":"2026-03-28T14:42:54Z","state":"initialized"}
+{"id":"event-000002","type":"session.stop","ts":"2026-03-28T14:43:25Z","state":"stopped"}
+{"type":"session.resume","ts":"2026-03-28T14:46:30Z","state":"initialized","data":{"cc_session_id":"27c550b4-b116-489d-9077-30c5c885cf55","method":"mapping"}}
+{"id":"event-000001","type":"session.start","ts":"2026-03-28T14:46:30Z","state":"initialized"}
+{"id":"event-000002","type":"tool.bash","ts":"2026-03-28T14:47:51Z","state":"initialized","data":{"command":"curl -s "https://devutils.com" 2>/dev/null | head -200 || echo "Could not fetch""}}
+{"id":"event-000003","type":"tool.bash","ts":"2026-03-28T14:47:55Z","state":"initialized","data":{"command":"curl -s "https://www.omni-calculator.com/sitemap.xml" 2>/dev/null | grep -oP '<loc>[^<]+</loc>' | head -80 || echo "Could not fetch sitemap""}}
+{"id":"event-000004","type":"tool.bash","ts":"2026-03-28T14:47:59Z","state":"initialized","data":{"command":"curl -s "https://transform.tools" 2>/dev/null | head -300 || echo "Could not fetch""}}
+{"id":"event-000005","type":"tool.bash","ts":"2026-03-28T14:50:01Z","state":"initialized","data":{"command":"curl -s "https://raw.githubusercontent.com/CorentinTh/it-tools/main/src/tools/index.ts" 2>/dev/null | head -200"}}
+{"id":"event-000006","type":"tool.bash","ts":"2026-03-28T14:50:16Z","state":"initialized","data":{"command":"ls /Users/mj/work/openGyver/cmd/"}}
+{"id":"event-000007","type":"tool.bash","ts":"2026-03-28T14:52:11Z","state":"initialized","data":{"command":"ls /Users/mj/work/openGyver/cmd/"}}
+{"id":"event-000008","type":"tool.bash","ts":"2026-03-28T14:52:23Z","state":"initialized","data":{"command":"ls /Users/mj/work/openGyver/cmd/"}}
+{"id":"event-000009","type":"tool.bash","ts":"2026-03-28T14:52:24Z","state":"initialized","data":{"command":"ls /Users/mj/work/openGyver/cmd/qr/ 2>/dev/null || echo "no qr dir""}}
+{"id":"event-000010","type":"tool.bash","ts":"2026-03-28T14:52:35Z","state":"initialized","data":{"command":"ls /Users/mj/work/openGyver/cmd/"}}
+{"id":"event-000011","type":"session.stop","ts":"2026-03-28T14:52:38Z","state":"stopped"}
+{"id":"event-000012","type":"tool.bash","ts":"2026-03-28T14:52:41Z","state":"stopped","data":{"command":"ls /Users/mj/work/openGyver/cmd/*/"}}
+{"id":"event-000013","type":"tool.bash","ts":"2026-03-28T14:52:41Z","state":"stopped","data":{"command":"mkdir -p /Users/mj/work/openGyver/cmd/cron /Users/mj/work/openGyver/cmd/math /Users/mj/work/openGyver/cmd/chmod"}}
+{"id":"event-000014","type":"tool.bash","ts":"2026-03-28T14:52:53Z","state":"stopped","data":{"command":"go get github.com/boombuler/barcode@latest"}}
+{"id":"event-000015","type":"tool.bash","ts":"2026-03-28T14:53:01Z","state":"stopped","data":{"command":"mkdir -p /Users/mj/work/openGyver/cmd/barcode /Users/mj/work/openGyver/cmd/mime /Users/mj/work/openGyver/cmd/checksum"}}
+{"id":"event-000016","type":"tool.bash","ts":"2026-03-28T14:53:27Z","state":"stopped","data":{"command":"go get github.com/pdfcpu/pdfcpu/pkg/api@latest github.com/pdfcpu/pdfcpu/pkg/pdfcpu@latest"}}
+{"id":"event-000017","type":"tool.write","ts":"2026-03-28T14:53:34Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/cmd/cron/cron.go"}}
+{"id":"event-000018","type":"tool.write","ts":"2026-03-28T14:53:38Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/cmd/barcode/barcode.go"}}
+{"id":"event-000019","type":"tool.bash","ts":"2026-03-28T14:53:41Z","state":"stopped","data":{"command":"mkdir -p /Users/mj/work/openGyver/cmd/pdf /Users/mj/work/openGyver/cmd/ascii /Users/mj/work/openGyver/cmd/phone"}}
+{"id":"event-000020","type":"tool.write","ts":"2026-03-28T14:54:11Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/cmd/barcode/barcode_test.go"}}
+{"id":"event-000021","type":"tool.write","ts":"2026-03-28T14:54:22Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/cmd/math/math.go"}}
+{"id":"event-000022","type":"tool.write","ts":"2026-03-28T14:54:26Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/cmd/pdf/pdf.go"}}
+{"id":"event-000023","type":"tool.bash","ts":"2026-03-28T14:54:45Z","state":"stopped","data":{"command":"go build ./cmd/pdf/ 2>&1 | head -30"}}
+{"id":"event-000024","type":"tool.write","ts":"2026-03-28T14:54:50Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/cmd/chmod/chmod.go"}}
+{"id":"event-000025","type":"tool.bash","ts":"2026-03-28T14:54:53Z","state":"stopped","data":{"command":"grep -rn 'Title\|Author\|Creator\|Producer\|CreationDate\|ModDate' $(go env GOMODCACHE)/github.com/pdfcpu/pdfcpu@v0.11.1/pkg/pdfcpu/model/xreftable.go 2>/dev/null | head -20"}}
+{"id":"event-000026","type":"tool.write","ts":"2026-03-28T14:54:59Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/cmd/mime/mime.go"}}
+{"id":"event-000027","type":"tool.write","ts":"2026-03-28T14:55:27Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/cmd/mime/mime_test.go"}}
+{"id":"event-000028","type":"tool.write","ts":"2026-03-28T14:55:28Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/cmd/cron/cron_test.go"}}
+{"id":"event-000029","type":"tool.write","ts":"2026-03-28T14:55:46Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/cmd/ascii/ascii.go"}}
+{"id":"event-000030","type":"tool.write","ts":"2026-03-28T14:55:50Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/cmd/math/math_test.go"}}
+{"id":"event-000031","type":"tool.write","ts":"2026-03-28T14:55:56Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/cmd/checksum/checksum.go"}}
+{"id":"event-000032","type":"tool.write","ts":"2026-03-28T14:56:12Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/cmd/chmod/chmod_test.go"}}
+{"id":"event-000033","type":"tool.edit","ts":"2026-03-28T14:56:20Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/main.go"}}
+{"id":"event-000034","type":"tool.write","ts":"2026-03-28T14:56:26Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/cmd/checksum/checksum_test.go"}}
+{"id":"event-000035","type":"tool.edit","ts":"2026-03-28T14:56:31Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/main.go"}}
+{"id":"event-000036","type":"tool.edit","ts":"2026-03-28T14:56:37Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/main.go"}}
+{"id":"event-000037","type":"tool.edit","ts":"2026-03-28T14:56:43Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/main.go"}}
+{"id":"event-000038","type":"tool.write","ts":"2026-03-28T14:56:47Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/cmd/phone/phone.go"}}
+{"id":"event-000039","type":"tool.edit","ts":"2026-03-28T14:56:54Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/main.go"}}
+{"id":"event-000040","type":"tool.bash","ts":"2026-03-28T14:56:57Z","state":"stopped","data":{"command":"go build ./cmd/pdf/ && go build ./cmd/ascii/ && go build ./cmd/phone/ && echo "All three compile OK""}}
+{"id":"event-000041","type":"tool.edit","ts":"2026-03-28T14:57:04Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/main.go"}}
+{"id":"event-000042","type":"tool.bash","ts":"2026-03-28T14:57:08Z","state":"stopped","data":{"command":"go build ./cmd/cron/ ./cmd/math/ ./cmd/chmod/"}}
+{"id":"event-000043","type":"tool.bash","ts":"2026-03-28T14:57:12Z","state":"stopped","data":{"command":"go mod tidy 2>&1"}}
+{"id":"event-000044","type":"tool.write","ts":"2026-03-28T14:57:22Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/cmd/pdf/pdf_test.go"}}
+{"id":"event-000045","type":"tool.edit","ts":"2026-03-28T14:57:29Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/cmd/mime/mime.go"}}
+{"id":"event-000046","type":"tool.edit","ts":"2026-03-28T14:57:31Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/cmd/cron/cron.go"}}
+{"id":"event-000047","type":"tool.bash","ts":"2026-03-28T14:57:38Z","state":"stopped","data":{"command":"go build ./... 2>&1"}}
+{"id":"event-000048","type":"tool.bash","ts":"2026-03-28T14:57:40Z","state":"stopped","data":{"command":"go test ./cmd/cron/ -v -count=1 2>&1"}}
+{"id":"event-000049","type":"tool.bash","ts":"2026-03-28T14:57:48Z","state":"stopped","data":{"command":"go test ./cmd/barcode/ ./cmd/mime/ ./cmd/checksum/ -v -count=1 2>&1"}}
+{"id":"event-000050","type":"tool.bash","ts":"2026-03-28T14:57:49Z","state":"stopped","data":{"command":"echo "cron:"; grep -c "^func Test" /Users/mj/work/openGyver/cmd/cron/cron_test.go; echo "math:"; grep -c "^func Test" /Users/mj/work/openGyver/cmd/math/math_test.go; echo "chmod:"; grep -c "^func Test"}}
+{"id":"event-000051","type":"tool.write","ts":"2026-03-28T14:57:53Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/cmd/ascii/ascii_test.go"}}
+{"id":"event-000052","type":"tool.bash","ts":"2026-03-28T14:58:00Z","state":"stopped","data":{"command":"go build -o /dev/null /Users/mj/work/openGyver/main.go 2>&1"}}
+{"id":"event-000053","type":"tool.edit","ts":"2026-03-28T14:58:22Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/go.mod"}}
+{"id":"event-000054","type":"tool.write","ts":"2026-03-28T14:58:24Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/cmd/phone/phone_test.go"}}
+{"id":"event-000055","type":"tool.bash","ts":"2026-03-28T14:58:35Z","state":"stopped","data":{"command":"ls /Users/mj/work/openGyver/cmd/cron/ /Users/mj/work/openGyver/cmd/math/ /Users/mj/work/openGyver/cmd/chmod/ /Users/mj/work/openGyver/cmd/pdf/ /Users/mj/work/openGyver/cmd/ascii/ /Users/mj/work/openGy"}}
+{"id":"event-000056","type":"tool.bash","ts":"2026-03-28T14:58:38Z","state":"stopped","data":{"command":"go version && which go"}}
+{"id":"event-000057","type":"tool.bash","ts":"2026-03-28T14:58:48Z","state":"stopped","data":{"command":"go build -o openGyver . 2>&1 | grep "error" | grep -v "npm\|nvm\|SyntaxError" | head -10"}}
+{"id":"event-000058","type":"tool.bash","ts":"2026-03-28T14:58:48Z","state":"stopped","data":{"command":"GOFLAGS=-mod=mod go test ./cmd/pdf/ -v 2>&1 | head -5"}}
+{"id":"event-000059","type":"tool.bash","ts":"2026-03-28T14:58:55Z","state":"stopped","data":{"command":"GOTOOLCHAIN=go1.25.0 go version 2>&1"}}
+{"id":"event-000060","type":"tool.bash","ts":"2026-03-28T14:58:58Z","state":"stopped","data":{"command":"./openGyver 2>&1 | grep "  [a-z]" | grep -v "openGyver\|help\|completion" | wc -l"}}
+{"id":"event-000061","type":"tool.bash","ts":"2026-03-28T14:59:10Z","state":"stopped","data":{"command":"GOTOOLCHAIN=go1.25.0 go mod tidy 2>&1"}}
+{"id":"event-000062","type":"tool.bash","ts":"2026-03-28T14:59:20Z","state":"stopped","data":{"command":"GOTOOLCHAIN=go1.25.0 go test ./cmd/pdf/ -v 2>&1"}}
+{"id":"event-000063","type":"tool.edit","ts":"2026-03-28T14:59:42Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/cmd/ascii/ascii.go"}}
+{"id":"event-000064","type":"tool.edit","ts":"2026-03-28T14:59:42Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/main.go"}}
+{"id":"event-000065","type":"tool.bash","ts":"2026-03-28T14:59:50Z","state":"stopped","data":{"command":"GOTOOLCHAIN=go1.25.0 go test ./cmd/ascii/ -v 2>&1"}}
+{"id":"event-000066","type":"tool.bash","ts":"2026-03-28T14:59:55Z","state":"stopped","data":{"command":"GOTOOLCHAIN=go1.25.0 go test ./cmd/phone/ -v 2>&1"}}
+{"id":"event-000067","type":"tool.edit","ts":"2026-03-28T15:00:00Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/main.go"}}
+{"id":"event-000068","type":"tool.bash","ts":"2026-03-28T15:00:14Z","state":"stopped","data":{"command":"go build -o openGyver . 2>&1 | grep "error" | grep -v "npm\|nvm\|SyntaxError" | head -5"}}
+{"id":"event-000069","type":"tool.bash","ts":"2026-03-28T15:00:25Z","state":"stopped","data":{"command":"GOTOOLCHAIN=go1.25.0 go build ./... 2>&1"}}
+{"id":"event-000070","type":"tool.bash","ts":"2026-03-28T15:00:30Z","state":"stopped","data":{"command":"./openGyver 2>&1 | grep "  [a-z]" | grep -v "openGyver\|help\|completion" | wc -l && echo "---" && ./openGyver 2>&1 | grep "  [a-z]" | grep -v "openGyver\|help\|completion" | grep -E "ascii|barcode|ch"}}
+{"id":"event-000071","type":"tool.bash","ts":"2026-03-28T15:00:33Z","state":"stopped","data":{"command":"GOTOOLCHAIN=go1.25.0 go test ./cmd/pdf/ ./cmd/ascii/ ./cmd/phone/ -v 2>&1 | grep -E '(^=== RUN|^--- PASS|^--- FAIL|^PASS|^FAIL|^ok)' "}}
+{"id":"event-000072","type":"tool.bash","ts":"2026-03-28T15:00:54Z","state":"stopped","data":{"command":"go test ./... -count=1 -short 2>&1 | grep -E "^ok|^FAIL" | grep -v "npm\|nvm\|SyntaxError""}}
+{"id":"event-000073","type":"tool.edit","ts":"2026-03-28T15:01:30Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/README.md"}}
+{"id":"event-000074","type":"tool.write","ts":"2026-03-28T15:01:47Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/docs/ascii.md"}}
+{"id":"event-000075","type":"tool.edit","ts":"2026-03-28T15:01:52Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/README.md"}}
+{"id":"event-000076","type":"tool.write","ts":"2026-03-28T15:02:10Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/docs/barcode.md"}}
+{"id":"event-000077","type":"tool.edit","ts":"2026-03-28T15:02:12Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/README.md"}}
+{"id":"event-000078","type":"tool.edit","ts":"2026-03-28T15:02:16Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/README.md"}}
+{"id":"event-000079","type":"tool.edit","ts":"2026-03-28T15:02:18Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/README.md"}}
+{"id":"event-000080","type":"tool.write","ts":"2026-03-28T15:02:22Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/docs/checksum.md"}}
+{"id":"event-000081","type":"tool.write","ts":"2026-03-28T15:02:35Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/docs/chmod.md"}}
+{"id":"event-000082","type":"tool.edit","ts":"2026-03-28T15:02:39Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/go.mod"}}
+{"id":"event-000083","type":"tool.write","ts":"2026-03-28T15:02:51Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/docs/cron.md"}}
+{"id":"event-000084","type":"tool.bash","ts":"2026-03-28T15:02:54Z","state":"stopped","data":{"command":"go build -o openGyver . 2>&1 | grep "error" | grep -v "npm\|nvm\|SyntaxError" | head -5"}}
+{"id":"event-000085","type":"tool.bash","ts":"2026-03-28T15:03:05Z","state":"stopped","data":{"command":"go test ./... -count=1 -short 2>&1 | grep "FAIL" | head -5"}}
+{"id":"event-000086","type":"tool.write","ts":"2026-03-28T15:03:16Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/docs/math.md"}}
+{"id":"event-000087","type":"tool.bash","ts":"2026-03-28T15:03:17Z","state":"stopped","data":{"command":"go test ./... -count=1 -short -v 2>&1 | grep -c "^--- PASS""}}
+{"id":"event-000088","type":"tool.write","ts":"2026-03-28T15:03:30Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/docs/mime.md"}}
+{"id":"event-000089","type":"tool.bash","ts":"2026-03-28T15:03:44Z","state":"stopped","data":{"command":"go test ./... -count=1 -short -v 2>&1 | grep "PASS:" | wc -l"}}
+{"id":"event-000090","type":"tool.write","ts":"2026-03-28T15:03:47Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/docs/pdf.md"}}
+{"id":"event-000091","type":"tool.bash","ts":"2026-03-28T15:03:54Z","state":"stopped","data":{"command":"go test ./... -count=1 -short -v 2>&1 | grep "PASS" | wc -l"}}
+{"id":"event-000092","type":"tool.write","ts":"2026-03-28T15:04:04Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/docs/phone.md"}}
+{"id":"event-000093","type":"tool.bash","ts":"2026-03-28T15:04:08Z","state":"stopped","data":{"command":"go test ./... -count=1 -short 2>&1 | grep -c "^ok""}}
+{"id":"event-000094","type":"tool.bash","ts":"2026-03-28T15:04:12Z","state":"stopped","data":{"command":"ls -la /Users/mj/work/openGyver/docs/{ascii,barcode,checksum,chmod,cron,math,mime,pdf,phone}.md"}}
+{"id":"event-000095","type":"tool.bash","ts":"2026-03-28T15:04:16Z","state":"stopped","data":{"command":"wc -l /Users/mj/work/openGyver/docs/{ascii,barcode,checksum,chmod,cron,math,mime,pdf,phone}.md"}}
+{"id":"event-000096","type":"tool.bash","ts":"2026-03-28T15:04:19Z","state":"stopped","data":{"command":"go version 2>&1 | tail -1"}}
+{"id":"event-000097","type":"tool.edit","ts":"2026-03-28T15:04:37Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/go.mod"}}
+{"id":"event-000098","type":"tool.bash","ts":"2026-03-28T15:04:51Z","state":"stopped","data":{"command":"go build -o openGyver . 2>&1 | grep "error" | grep -v "npm\|nvm\|SyntaxError" | head -3 && go test ./cmd/cron/ ./cmd/math/ ./cmd/ascii/ -count=1 -short 2>&1 | grep -E "^ok|^FAIL""}}

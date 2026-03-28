@@ -1,0 +1,17 @@
+{
+  "version": "1.0",
+  "updatedAt": "2026-03-28T14:46:44.420Z",
+  "skills": {},
+  "commands": {
+    "harness-plan": {
+      "count": 2,
+      "lastUsed": "2026-03-28T14:46:01.320Z"
+    },
+    "harness-work": {
+      "count": 2,
+      "lastUsed": "2026-03-28T14:46:44.419Z"
+    }
+  },
+  "agents": {},
+  "hooks": {}
+}

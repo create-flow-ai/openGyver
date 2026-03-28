@@ -84,6 +84,7 @@ openGyver convertFile data.csv -o data.xlsx -q # silent
 |---------|-------------|------|
 | [encode](docs/encode.md) | Encode/decode: Base64, Base32, Base58, URL, HTML, hex, binary, ROT13, Morse, Punycode, JWT | [details](docs/encode.md) |
 | [hash](docs/hash.md) | Hashing: MD5, SHA-1/256/384/512, HMAC, bcrypt, CRC32, Adler-32 | [details](docs/hash.md) |
+| [checksum](docs/checksum.md) | File checksum calculator and verifier (MD5, SHA-1/256/512, CRC32) | [details](docs/checksum.md) |
 
 ### Data & Format Tools
 
@@ -103,6 +104,7 @@ openGyver convertFile data.csv -o data.xlsx -q # silent
 | [generate](docs/generate.md) | Password, passphrase, API key, secret, OTP, nanoid, snowflake, short ID | [details](docs/generate.md) |
 | [uuid](docs/uuid.md) | UUID v4 (random) and v6 (time-sorted) | [details](docs/uuid.md) |
 | [qr](docs/qr.md) | QR code generator (ASCII terminal, PNG, SVG) | [details](docs/qr.md) |
+| [barcode](docs/barcode.md) | Barcode generator (Code128, EAN-13, QR, DataMatrix) | [details](docs/barcode.md) |
 | [testdata](docs/testdata.md) | Fake data: people, CSV, JSON, random numbers | [details](docs/testdata.md) |
 
 ### Time & Date
@@ -111,6 +113,7 @@ openGyver convertFile data.csv -o data.xlsx -q # silent
 |---------|-------------|------|
 | [epoch](docs/epoch.md) | Unix epoch: current time, add/subtract durations | [details](docs/epoch.md) |
 | [timex](docs/timex.md) | Time tools: now, to-utc, to-tz, to-unix, from-unix, format, diff, add, info | [details](docs/timex.md) |
+| [cron](docs/cron.md) | Cron expression parser, validator, and next-run calculator | [details](docs/cron.md) |
 
 ### Lookup & Reference
 
@@ -121,12 +124,28 @@ openGyver convertFile data.csv -o data.xlsx -q # silent
 | [network](docs/network.md) | DNS lookup, public IP, WHOIS, CIDR calculator, URL parser, HTTP status codes | [details](docs/network.md) |
 | [color](docs/color.md) | Color convert (hex/RGB/HSL/CMYK), WCAG contrast, palette, name lookup | [details](docs/color.md) |
 | [number](docs/number.md) | Number base conversion (2-36), Roman numerals, IEEE 754 | [details](docs/number.md) |
+| [mime](docs/mime.md) | MIME type lookup, reverse lookup, and file detection | [details](docs/mime.md) |
+| [ascii](docs/ascii.md) | ASCII art banners, table reference, character lookup | [details](docs/ascii.md) |
+| [phone](docs/phone.md) | Phone number formatter, validator, and country code lookup | [details](docs/phone.md) |
 
 ### Text Tools
 
 | Command | Description | Docs |
 |---------|-------------|------|
 | [text](docs/text.md) | Count, case convert, reverse, sort, dedupe, slug, lorem, diff, wrap, trim, replace | [details](docs/text.md) |
+
+### Math & Calculators
+
+| Command | Description | Docs |
+|---------|-------------|------|
+| [math](docs/math.md) | Math expression evaluator, percentage, GCD, LCM, factorial, Fibonacci | [details](docs/math.md) |
+| [chmod](docs/chmod.md) | Unix file permission calculator (octal/symbolic/umask) | [details](docs/chmod.md) |
+
+### File Tools
+
+| Command | Description | Docs |
+|---------|-------------|------|
+| [pdf](docs/pdf.md) | PDF merge, split, page count, metadata (pure Go, no external tools) | [details](docs/pdf.md) |
 
 ### Crypto & Security
 

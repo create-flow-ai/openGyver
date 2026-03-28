@@ -1,0 +1,15 @@
+{"type":"session.start","ts":"2026-03-28T14:42:54Z","state":"initialized","data":{"cc_session_id":"27c550b4-b116-489d-9077-30c5c885cf55","note":"no_archive_found"}}
+{"id":"event-000001","type":"session.resume","ts":"2026-03-28T14:42:54Z","state":"initialized"}
+{"id":"event-000002","type":"session.stop","ts":"2026-03-28T14:43:25Z","state":"stopped"}
+{"type":"session.resume","ts":"2026-03-28T14:46:30Z","state":"initialized","data":{"cc_session_id":"27c550b4-b116-489d-9077-30c5c885cf55","method":"mapping"}}
+{"id":"event-000001","type":"session.start","ts":"2026-03-28T14:46:30Z","state":"initialized"}
+{"id":"event-000002","type":"tool.bash","ts":"2026-03-28T14:47:51Z","state":"initialized","data":{"command":"curl -s "https://devutils.com" 2>/dev/null | head -200 || echo "Could not fetch""}}
+{"id":"event-000003","type":"tool.bash","ts":"2026-03-28T14:47:55Z","state":"initialized","data":{"command":"curl -s "https://www.omni-calculator.com/sitemap.xml" 2>/dev/null | grep -oP '<loc>[^<]+</loc>' | head -80 || echo "Could not fetch sitemap""}}
+{"id":"event-000004","type":"tool.bash","ts":"2026-03-28T14:47:59Z","state":"initialized","data":{"command":"curl -s "https://transform.tools" 2>/dev/null | head -300 || echo "Could not fetch""}}
+{"id":"event-000005","type":"tool.bash","ts":"2026-03-28T14:50:01Z","state":"initialized","data":{"command":"curl -s "https://raw.githubusercontent.com/CorentinTh/it-tools/main/src/tools/index.ts" 2>/dev/null | head -200"}}
+{"id":"event-000006","type":"tool.bash","ts":"2026-03-28T14:50:16Z","state":"initialized","data":{"command":"ls /Users/mj/work/openGyver/cmd/"}}
+{"id":"event-000007","type":"tool.bash","ts":"2026-03-28T14:52:11Z","state":"initialized","data":{"command":"ls /Users/mj/work/openGyver/cmd/"}}
+{"id":"event-000008","type":"tool.bash","ts":"2026-03-28T14:52:23Z","state":"initialized","data":{"command":"ls /Users/mj/work/openGyver/cmd/"}}
+{"id":"event-000009","type":"tool.bash","ts":"2026-03-28T14:52:24Z","state":"initialized","data":{"command":"ls /Users/mj/work/openGyver/cmd/qr/ 2>/dev/null || echo "no qr dir""}}
+{"id":"event-000010","type":"tool.bash","ts":"2026-03-28T14:52:35Z","state":"initialized","data":{"command":"ls /Users/mj/work/openGyver/cmd/"}}
+{"id":"event-000011","type":"session.stop","ts":"2026-03-28T14:52:38Z","state":"stopped"}
