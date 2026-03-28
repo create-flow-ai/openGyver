@@ -12,7 +12,9 @@ Designed to be used standalone, or hooked into CI/CD pipelines, shell scripts, a
 - [Quick Start](#quick-start)
 - [Output Modes](#output-modes)
 - [Commands](#commands)
+  - [accessibility — WCAG & Readability](#accessibility)
   - [archive — Create & Extract Archives](#archive)
+  - [color — Color Conversion & Palette Tools](#color)
   - [convert — Unit & Currency Conversions](#convert)
   - [convertAudio — Audio Format Conversions](#convertaudio)
   - [convertCAD — CAD File Conversions](#convertcad)
@@ -23,12 +25,27 @@ Designed to be used standalone, or hooked into CI/CD pipelines, shell scripts, a
   - [convertPresentation — Presentation Conversions](#convertpresentation)
   - [convertVector — Vector Graphics Conversions](#convertvector)
   - [convertVideo — Video Format Conversions](#convertvideo)
-  - [toIco — Image to ICO](#toico)
-  - [toGif — Images to Animated GIF](#togif)
+  - [crypto — Encryption & Key Generation](#crypto)
+  - [dataformat — YAML/TOML/XML/CSV Converters](#dataformat)
+  - [diff — Text, JSON & CSV Diff](#diff)
+  - [electrical — Circuit Calculators](#electrical)
+  - [encode — Encoding & Decoding](#encode)
   - [epoch — Unix Epoch Utilities](#epoch)
-  - [timex — Time & Timezone Utilities](#timex)
+  - [finance — Financial Calculators](#finance)
+  - [generate — Password, Key & ID Generators](#generate)
+  - [geo — Geolocation Tools](#geo)
+  - [hash — Hashing & Checksums](#hash)
+  - [json — JSON Tools](#json)
+  - [network — DNS, IP & Web Utilities](#network)
+  - [number — Number Base & Roman Numerals](#number)
   - [qr — QR Code Generator](#qr)
+  - [regex — Regular Expression Tools](#regex)
   - [stock — Stock Ticker Lookup](#stock)
+  - [testdata — Fake Data Generators](#testdata)
+  - [text — Text Manipulation](#text)
+  - [timex — Time & Timezone Utilities](#timex)
+  - [toGif — Images to Animated GIF](#togif)
+  - [toIco — Image to ICO](#toico)
   - [uuid — UUID Generator](#uuid)
 - [Plugin Architecture](#plugin-architecture)
 - [Building from Source](#building-from-source)
@@ -195,6 +212,27 @@ openGyver convertVideo input.avi -o output.mp4 -q
 
 ---
 
+### accessibility
+
+WCAG contrast ratio checker and readability score calculator.
+
+#### Subcommands
+
+| Subcommand    | Description |
+|---------------|-------------|
+| `contrast`    | WCAG 2.1 contrast ratio checker — reports AA/AAA pass/fail for normal and large text |
+| `readability` | Flesch Reading Ease, Flesch-Kincaid Grade Level, Gunning Fog Index |
+
+```bash
+openGyver accessibility contrast "#ffffff" "#000000"
+openGyver accessibility contrast "#333" "#ccc"
+openGyver accessibility readability "The quick brown fox jumps over the lazy dog."
+openGyver accessibility readability --file article.txt
+openGyver accessibility readability -j "Some complex text."
+```
+
+---
+
 ### archive
 
 Create and extract archive files. Implemented in pure Go — no external tools required.
@@ -237,6 +275,31 @@ openGyver archive create -o files.tar doc1.txt doc2.txt
 openGyver archive extract backup.zip
 openGyver archive extract backup.zip -o ./extracted/
 openGyver archive extract project.tar.gz -o ./project/
+```
+
+---
+
+### color
+
+Color conversion, contrast checking, and palette generation.
+
+#### Subcommands
+
+| Subcommand | Description |
+|------------|-------------|
+| `convert`  | Convert between hex, RGB, HSL, CMYK. Auto-detects input format. `--to` flag for target. |
+| `contrast` | WCAG contrast ratio between two colors |
+| `palette`  | Generate palettes: `--type` complementary/analogous/triadic/shades/tints. `--count` default 5. |
+| `name`     | Find closest CSS color name for a hex value (148 colors) |
+| `random`   | Generate random colors. `--format` hex/rgb/hsl, `--count` |
+
+```bash
+openGyver color convert "#ff5733" --to rgb
+openGyver color convert "#ff5733" --to rgb -j       # JSON with all formats
+openGyver color contrast "#333" "#fff"
+openGyver color palette "#ff5733" --type shades --count 5
+openGyver color name "#e74c3c"
+openGyver color random --count 3 --format hex
 ```
 
 ---
@@ -734,6 +797,403 @@ openGyver convertVideo input.mov -o output.mp4 --resolution 1920x1080
 openGyver convertVideo input.mp4 -o output.mp4 --vbitrate 5M --abitrate 192k
 openGyver convertVideo input.mp4 -o output.gif --fps 10
 openGyver convertVideo input.mp4 -o output.webm --codec libvpx-vp9
+```
+
+---
+
+### crypto
+
+Cryptographic tools — AES encryption, RSA/SSH key generation, SSL certificates.
+
+#### Subcommands
+
+| Subcommand | Description |
+|------------|-------------|
+| `aes`      | AES-256-GCM encrypt/decrypt. `--key` (hex or passphrase, required). `--decrypt`/`-d` to decrypt. |
+| `rsa`      | RSA key pair generator. `--bits` (default 2048). `--output-dir` to write files. |
+| `sshkey`   | SSH key pair generator. `--type` ed25519 (default) or rsa. `--comment`. |
+| `cert`     | Self-signed certificate generator. `--cn` (required), `--days` (default 365). |
+| `csr`      | Certificate Signing Request generator. `--cn` (required), `--org`, `--country`. |
+
+```bash
+openGyver crypto aes "secret message" --key "mypassword"
+openGyver crypto aes "encrypted_base64" --key "mypassword" -d
+openGyver crypto rsa --bits 4096 --output-dir ./keys/
+openGyver crypto sshkey --type ed25519 --comment "me@host"
+openGyver crypto cert --cn "localhost" --days 365 --output-dir ./certs/
+openGyver crypto csr --cn "example.com" --org "My Corp" --country US
+```
+
+---
+
+### dataformat
+
+Convert between data serialization formats — YAML, TOML, XML, CSV, JSON.
+
+#### Subcommands
+
+| Subcommand  | Description |
+|-------------|-------------|
+| `yaml2json` | YAML to JSON |
+| `json2yaml` | JSON to YAML |
+| `toml2json` | TOML to JSON |
+| `json2toml` | JSON to TOML |
+| `csv2json`  | CSV to JSON (first row = headers, outputs array of objects) |
+| `json2csv`  | JSON array of objects to CSV |
+| `xml2json`  | XML to JSON |
+| `json2xml`  | JSON to XML |
+
+All accept input as argument or `--file`/`-f`. Output to stdout or `--output`/`-o`.
+
+```bash
+openGyver dataformat yaml2json --file config.yml
+openGyver dataformat json2yaml '{"name":"John","age":30}'
+openGyver dataformat csv2json --file data.csv
+openGyver dataformat toml2json --file config.toml -o config.json
+openGyver dataformat json2xml '{"user":{"name":"Alice"}}'
+```
+
+---
+
+### diff
+
+Compare files — unified text diff, JSON structural diff, CSV row diff.
+
+#### Subcommands
+
+| Subcommand | Flags | Description |
+|------------|-------|-------------|
+| `text`     | `--file1`, `--file2` | Unified diff with +/- markers |
+| `json`     | `--file1`, `--file2` | Structural diff showing added/removed/changed keys |
+| `csv`      | `--file1`, `--file2` | Row-by-row CSV comparison |
+
+```bash
+openGyver diff text --file1 old.txt --file2 new.txt
+openGyver diff json --file1 v1.json --file2 v2.json
+openGyver diff csv --file1 before.csv --file2 after.csv
+openGyver diff json --file1 a.json --file2 b.json -j
+```
+
+---
+
+### electrical
+
+Circuit design calculators — Ohm's law, resistor codes, LED resistors, voltage dividers.
+
+#### Subcommands
+
+| Subcommand | Flags | Description |
+|------------|-------|-------------|
+| `ohm`      | Any 2 of: `--voltage`/`-v`, `--current`/`-i`, `--resistance`/`-r` | Calculates the third value + power |
+| `resistor` | Arg: resistance value (e.g. `4700`, `4.7k`, `4k7`) | Shows 4-band and 5-band color codes |
+| `led`      | `--source`, `--forward`, `--current` (default 20mA) | Calculates resistor value for LED circuit |
+| `divider`  | `--vin`, `--r1`, `--r2` | Calculates Vout, ratio, current, power |
+
+```bash
+openGyver electrical ohm --voltage 12 --resistance 100
+openGyver electrical resistor 4.7k
+openGyver electrical led --source 5 --forward 2.1
+openGyver electrical divider --vin 12 --r1 10000 --r2 4700
+```
+
+---
+
+### encode
+
+Encode and decode text in various formats.
+
+#### Subcommands
+
+| Subcommand | Description |
+|------------|-------------|
+| `base64`   | Base64 encode/decode (`--decode`/`-d`) |
+| `base32`   | Base32 encode/decode |
+| `base58`   | Base58 (Bitcoin alphabet) encode/decode |
+| `url`      | URL percent-encoding encode/decode |
+| `html`     | HTML entity encode/decode |
+| `hex`      | Text to hex / hex to text |
+| `binary`   | Text to 8-bit binary / binary to text |
+| `rot13`    | ROT13 (symmetric) |
+| `morse`    | Morse code encode/decode |
+| `punycode` | Unicode to Punycode / Punycode to Unicode |
+| `jwt`      | Decode JWT token payload (no verification) |
+
+All accept input as argument or `--file`/`-f`. All support `--json`/`-j`.
+
+```bash
+openGyver encode base64 "hello world"           # aGVsbG8gd29ybGQ=
+openGyver encode base64 -d "aGVsbG8gd29ybGQ="   # hello world
+openGyver encode url "hello world & foo"
+openGyver encode hex "hello"
+openGyver encode rot13 "hello"
+openGyver encode morse "SOS"
+openGyver encode jwt "eyJhbG..."
+openGyver encode base64 "data" -j               # JSON output
+```
+
+---
+
+### finance
+
+Financial calculators for everyday money math.
+
+#### Subcommands
+
+| Subcommand | Key Flags | Description |
+|------------|-----------|-------------|
+| `loan`     | `--principal`, `--rate`, `--years` | Monthly payment, total payment, total interest |
+| `compound` | `--principal`, `--rate`, `--years`, `--frequency` (default 12) | Final amount, total interest |
+| `roi`      | `--initial`, `--final` | ROI percentage, profit/loss |
+| `tip`      | `--amount`, `--percent` (default 18), `--split` (default 1) | Tip, total, per person |
+| `tax`      | `--amount`, `--rate` | Tax amount, total |
+| `salary`   | `--amount`, `--from`, `--to` (hourly/daily/weekly/monthly/yearly) | Pay period conversion |
+| `discount` | `--price`, `--percent` | Discount amount, final price |
+| `margin`   | `--cost`, `--revenue` | Profit, margin %, markup % |
+
+```bash
+openGyver finance loan --principal 300000 --rate 6.5 --years 30
+openGyver finance compound --principal 10000 --rate 7 --years 10
+openGyver finance tip --amount 85.50 --percent 20 --split 4
+openGyver finance salary --amount 50 --from hourly --to yearly
+openGyver finance margin --cost 40 --revenue 100 -j
+```
+
+---
+
+### generate
+
+Random generators — passwords, keys, IDs, OTP secrets.
+
+#### Subcommands
+
+| Subcommand   | Key Flags | Description |
+|--------------|-----------|-------------|
+| `password`   | `--length` (16), `--no-upper/lower/digits/special`, `--count` | Random password |
+| `passphrase` | `--words` (4), `--separator` ("-"), `--count` | Diceware passphrase (1296-word list) |
+| `string`     | `--length` (32), `--charset` (alpha/alphanumeric/hex/base64/custom), `--count` | Random string |
+| `apikey`     | `--prefix`, `--length` (32) | Base62 API key |
+| `secret`     | `--length` (64 bytes) | Hex-encoded secret key |
+| `otp`        | `--issuer`, `--account` | TOTP secret + otpauth:// URI |
+| `nanoid`     | `--length` (21), `--alphabet` | Nano ID |
+| `snowflake`  | | 64-bit timestamp-based ID |
+| `shortid`    | `--length` (8) | Short base62 ID |
+
+All use `crypto/rand`. All support `--json`/`-j`.
+
+```bash
+openGyver generate password                       # random 16-char password
+openGyver generate password --length 32 --count 5
+openGyver generate passphrase --words 6
+openGyver generate apikey --prefix "sk_live_"
+openGyver generate secret --length 32
+openGyver generate otp --issuer "MyApp" --account "user@example.com"
+openGyver generate nanoid
+openGyver generate snowflake
+```
+
+---
+
+### geo
+
+Geolocation tools — distance calculation, coordinate conversion.
+
+#### Subcommands
+
+| Subcommand | Flags | Description |
+|------------|-------|-------------|
+| `distance` | `--lat1`, `--lon1`, `--lat2`, `--lon2` | Haversine great-circle distance (km and miles) |
+| `dms`      | Arg: decimal or DMS | Convert between decimal degrees and DMS notation |
+| `utm`      | `--lat`, `--lon` | Convert lat/lon to UTM coordinates |
+
+```bash
+openGyver geo distance --lat1 40.7128 --lon1 -74.006 --lat2 51.5074 --lon2 -0.1278
+openGyver geo dms 40.7128                        # → 40°42'46.08"N
+openGyver geo utm --lat 40.7128 --lon -74.006
+```
+
+---
+
+### hash
+
+Compute cryptographic hashes and checksums.
+
+#### Subcommands
+
+| Subcommand | Description |
+|------------|-------------|
+| `md5`      | MD5 hash |
+| `sha1`     | SHA-1 hash |
+| `sha256`   | SHA-256 hash |
+| `sha384`   | SHA-384 hash |
+| `sha512`   | SHA-512 hash |
+| `hmac`     | HMAC generator (`--key`, `--algorithm` sha256/sha1/md5/sha384/sha512) |
+| `bcrypt`   | bcrypt hash (`--rounds` default 10) or verify (`--verify` hash) |
+| `crc32`    | CRC-32 checksum |
+| `adler32`  | Adler-32 checksum |
+
+All accept input as argument or `--file`/`-f`. `--uppercase`/`-u` for hex output.
+
+```bash
+openGyver hash sha256 "hello"
+openGyver hash md5 --file document.pdf
+openGyver hash hmac "message" --key "secret" --algorithm sha256
+openGyver hash bcrypt "password123"
+openGyver hash bcrypt "password123" --verify '$2a$10$...'
+openGyver hash sha256 "data" -j -u
+```
+
+---
+
+### json
+
+JSON tools — format, minify, validate, path query, escape/unescape.
+
+#### Subcommands
+
+| Subcommand | Description |
+|------------|-------------|
+| `format`   | Beautify JSON (`--indent` default 2). `--file`/`-f`, `--output`/`-o`. |
+| `minify`   | Remove whitespace from JSON. `--file`/`-f`, `--output`/`-o`. |
+| `validate` | Check if JSON is valid. Outputs "valid" or error. |
+| `path`     | Evaluate dot-notation path (e.g. `data.users[0].name`). `--file`/`-f`. |
+| `escape`   | Escape a string for JSON embedding |
+| `unescape` | Unescape a JSON string literal |
+
+```bash
+openGyver json format '{"a":1,"b":2}'
+openGyver json minify --file data.json -o data.min.json
+openGyver json validate '{"valid": true}'
+openGyver json path "users[0].name" --file data.json
+openGyver json escape 'hello "world"'
+```
+
+---
+
+### network
+
+Network and web utilities — DNS, WHOIS, IP, CIDR, URL parsing, HTTP status codes.
+
+#### Subcommands
+
+| Subcommand   | Description |
+|--------------|-------------|
+| `dns`        | DNS lookup. `--type` A/AAAA/MX/TXT/NS/CNAME/SOA/SRV/PTR. |
+| `ip`         | Show your public IP address |
+| `whois`      | WHOIS lookup for a domain |
+| `cidr`       | CIDR calculator — network, broadcast, host range, subnet mask |
+| `urlparse`   | Parse URL into components (scheme, host, port, path, query, fragment) |
+| `httpstatus` | Look up HTTP status code meaning |
+| `useragent`  | Parse User-Agent string (browser, OS, device type) |
+| `jwt`        | Decode JWT token header and payload |
+
+```bash
+openGyver network dns example.com --type MX
+openGyver network ip
+openGyver network whois example.com
+openGyver network cidr 192.168.1.0/24
+openGyver network urlparse "https://example.com/path?q=1&r=2#frag"
+openGyver network httpstatus 404
+openGyver network useragent "Mozilla/5.0 ..."
+```
+
+---
+
+### number
+
+Number base conversions and Roman numerals.
+
+#### Subcommands
+
+| Subcommand | Description |
+|------------|-------------|
+| `base`     | Convert between bases 2-36. `--from` (default 10), `--to` (required). |
+| `roman`    | Auto-detects direction: decimal to Roman or Roman to decimal. |
+| `ieee754`  | Show IEEE 754 float32/float64 representation (sign, exponent, mantissa). |
+
+```bash
+openGyver number base 255 --to 16            # ff
+openGyver number base ff --from 16 --to 2    # 11111111
+openGyver number roman 42                    # XLII
+openGyver number roman XLII                  # 42
+openGyver number ieee754 3.14
+```
+
+---
+
+### regex
+
+Regular expression tools — test, replace, extract.
+
+#### Subcommands
+
+| Subcommand | Args | Description |
+|------------|------|-------------|
+| `test`     | `<pattern> <input>` | Test regex, show match result and groups. `--global`/`-g` for all matches. |
+| `replace`  | `<pattern> <replacement> <input>` | Regex find-and-replace. Supports `$1`, `$2` groups. |
+| `extract`  | `<pattern> <input>` | Extract all matches, one per line. `--file`/`-f`. |
+
+```bash
+openGyver regex test "\d+" "order 42 has 3 items"
+openGyver regex test --global "\d+" "order 42 has 3 items"
+openGyver regex replace "\d+" "X" "order 42 has 3 items"
+openGyver regex extract "\w+@\w+\.\w+" --file emails.txt
+```
+
+---
+
+### testdata
+
+Generate fake/test data for development.
+
+#### Subcommands
+
+| Subcommand | Key Flags | Description |
+|------------|-----------|-------------|
+| `person`   | `--count` (1) | Fake name, email, phone, address, age |
+| `csv`      | `--rows` (10), `--columns` (name,email,age,city) | Sample CSV. Column types: name, email, number, date, bool, city, country, age, phone, uuid |
+| `json`     | `--count` (5) | Sample JSON objects with id, name, email, age, active, created_at |
+| `number`   | `--min` (0), `--max` (100), `--count` (1), `--float` | Random numbers |
+
+```bash
+openGyver testdata person --count 5
+openGyver testdata person --count 3 -j
+openGyver testdata csv --rows 100 --columns name,email,age,city,phone
+openGyver testdata json --count 20
+openGyver testdata number --min 1 --max 1000 --count 10
+```
+
+---
+
+### text
+
+Text manipulation — counting, case conversion, sorting, diffing, and more.
+
+#### Subcommands
+
+| Subcommand | Description |
+|------------|-------------|
+| `count`    | Word, character, line, sentence count |
+| `case`     | Case converter: `--to` upper/lower/title/sentence/camel/snake/kebab/pascal/constant/dot |
+| `reverse`  | Reverse a string |
+| `sort`     | Sort lines: `--by` alpha/length/numeric, `--reverse` |
+| `dedupe`   | Remove duplicate lines |
+| `slug`     | Generate URL slug |
+| `lorem`    | Lorem Ipsum generator: `--words`, `--sentences`, `--paragraphs` |
+| `diff`     | Text diff between two files: `--file1`, `--file2` |
+| `wrap`     | Word wrap: `--width` (default 80) |
+| `lines`    | Add line numbers |
+| `trim`     | Strip whitespace, `--blank` to remove blank lines |
+| `replace`  | Find and replace: `--find`, `--replace`, `--regex` |
+
+```bash
+openGyver text count "hello world foo bar"
+openGyver text count --file document.txt
+openGyver text case "hello world" --to snake       # hello_world
+openGyver text case "helloWorld" --to kebab         # hello-world
+openGyver text slug "Hello World! This is a Test"   # hello-world-this-is-a-test
+openGyver text lorem --sentences 3
+openGyver text sort --file list.txt --by length --reverse
+openGyver text replace --find "old" --replace "new" --file doc.txt
 ```
 
 ---
@@ -1245,7 +1705,9 @@ openGyver/
   main.go                             # Entrypoint — imports all plugins
   cmd/
     root.go                           # Root command + Register() function
-    archive/                          # ZIP, TAR, TAR.GZ (pure Go)
+    accessibility/                    # WCAG contrast, readability scores
+    archive/                          # ZIP, TAR, TAR.GZ, 7Z, RAR
+    color/                            # Color conversion, palette, contrast
     convert/                          # Unit & currency conversions
     convertaudio/                     # Audio conversions (ffmpeg)
     convertcad/                       # CAD conversions (ODA/LibreCAD)
@@ -1256,12 +1718,27 @@ openGyver/
     convertpresentation/              # Presentation conversions (LibreOffice)
     convertvector/                    # Vector graphics (rsvg/Inkscape)
     convertvideo/                     # Video conversions (ffmpeg)
-    toico/                            # Image → ICO
-    togif/                            # Images → animated GIF
+    crypto/                           # AES, RSA, SSH, SSL certs
+    dataformat/                       # YAML/TOML/XML/CSV ↔ JSON
+    diff/                             # Text, JSON, CSV diff
+    electrical/                       # Ohm's law, resistor codes, LED
+    encode/                           # Base64, hex, URL, Morse, JWT
     epoch/                            # Unix epoch utilities
-    timex/                            # Time & timezone utilities
+    finance/                          # Loan, compound interest, ROI
+    generate/                         # Passwords, keys, IDs, OTP
+    geo/                              # Distance, DMS, UTM
+    hash/                             # MD5, SHA-*, HMAC, bcrypt
+    jsontools/                        # JSON format, minify, validate
+    network/                          # DNS, WHOIS, IP, CIDR
+    number/                           # Base conversion, Roman numerals
     qr/                               # QR code generator
-    stock/                            # Stock ticker lookup (Yahoo Finance)
+    regex/                            # Regex test, replace, extract
+    stock/                            # Stock ticker lookup
+    testdata/                         # Fake data generators
+    text/                             # Text manipulation tools
+    timex/                            # Time & timezone utilities
+    togif/                            # Images → animated GIF
+    toico/                            # Image → ICO
     uuid/                             # UUID generator
 ```
 
