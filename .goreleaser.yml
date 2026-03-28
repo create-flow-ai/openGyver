@@ -1,0 +1,62 @@
+version: 2
+
+project_name: openGyver
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - main: .
+    binary: openGyver
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - darwin
+      - linux
+      - windows
+      - freebsd
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w -X main.version={{.Version}} -X main.commit={{.ShortCommit}} -X main.date={{.Date}}
+
+archives:
+  - format: tar.gz
+    name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
+    format_overrides:
+      - goos: windows
+        format: zip
+
+brews:
+  - repository:
+      owner: create-flow-ai
+      name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
+    directory: Formula
+    homepage: "https://github.com/create-flow-ai/openGyver"
+    description: "Swiss-army-knife CLI for everyday conversions — images, units, currencies, documents, time, and more"
+    license: "MIT"
+    install: |
+      bin.install "openGyver"
+    test: |
+      system "#{bin}/openGyver", "--help"
+      system "#{bin}/openGyver", "epoch"
+      system "#{bin}/openGyver", "uuid"
+
+checksum:
+  name_template: "checksums.txt"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^Merge"
+
+release:
+  github:
+    owner: create-flow-ai
+    name: openGyver
