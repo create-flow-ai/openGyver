@@ -449,29 +449,53 @@ If only `--width` or `--height` is given, the other scales proportionally.
 
 #### Supported Formats
 
-| Format | Read | Write | Extensions      |
-|--------|------|-------|-----------------|
-| PNG    | yes  | yes   | `.png`          |
-| JPEG   | yes  | yes   | `.jpg`, `.jpeg` |
-| GIF    | yes  | yes   | `.gif`          |
-| BMP    | yes  | yes   | `.bmp`          |
-| TIFF   | yes  | yes   | `.tiff`, `.tif` |
-| WebP   | yes  | no    | `.webp`         |
-| HEIC   | no   | no    | `.heic`, `.heif`|
+| Format | Read | Write | Extensions                |
+|--------|------|-------|---------------------------|
+| PNG    | yes  | yes   | `.png`                    |
+| JPEG   | yes  | yes   | `.jpg`, `.jpeg`, `.jfif`  |
+| GIF    | yes  | yes   | `.gif`                    |
+| BMP    | yes  | yes   | `.bmp`                    |
+| TIFF   | yes  | yes   | `.tiff`, `.tif`           |
+| PPM    | yes  | yes   | `.ppm`, `.pgm`, `.pbm`    |
+| SVG    | no   | yes*  | `.svg` (raster → vector)  |
+| WebP   | yes  | no    | `.webp`                   |
+| HEIC   | yes* | no    | `.heic`, `.heif`          |
+| Camera RAW | yes* | no | `.cr2`, `.nef`, `.arw`, `.dng`, `.orf`, `.raf`, `.rw2`, `.pef`, and 16 more |
 
-WebP can be read but not written in pure Go. HEIC requires platform tools (`sips` on macOS or ImageMagick).
+\* SVG output uses potrace (`brew install potrace`) or ImageMagick for raster-to-vector tracing.
+\* HEIC and Camera RAW decoding requires dcraw, ImageMagick, or Apple sips.
 
 #### Examples
 
 ```bash
+# Basic format conversion
 openGyver convertImage photo.png -o photo.jpg
 openGyver convertImage photo.jpg -o photo.png
 openGyver convertImage photo.jpg -o photo.bmp
 openGyver convertImage photo.bmp -o photo.tiff
 openGyver convertImage photo.webp -o photo.png
+
+# JPEG compression quality
 openGyver convertImage photo.png -o photo.jpg --quality 85
+openGyver convertImage photo.png -o lo-fi.jpg --quality 30
+
+# Resize
 openGyver convertImage photo.png -o thumb.jpg --width 200
 openGyver convertImage photo.png -o resized.png --width 800 --height 600
+
+# Raster → SVG (vector tracing)
+openGyver convertImage logo.png -o logo.svg
+openGyver convertImage icon.bmp -o icon.svg
+
+# Camera RAW → standard format
+openGyver convertImage photo.cr2 -o photo.jpg
+openGyver convertImage photo.nef -o photo.png
+openGyver convertImage photo.dng -o photo.tiff
+
+# PPM output
+openGyver convertImage photo.png -o photo.ppm
+
+# Format hint for files without standard extensions
 openGyver convertImage raw.dat -o out.png --format bmp
 ```
 

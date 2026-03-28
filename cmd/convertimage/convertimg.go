@@ -49,6 +49,7 @@ SUPPORTED FORMATS:
   PPM      yes    yes     .ppm, .pgm, .pbm, .pnm
   PCX      yes    no      .pcx
   TGA      yes    no      .tga
+  SVG      no     yes*    .svg (raster → vector via potrace/ImageMagick)
   ICO      no     no      .ico (use toIco command instead)
 
   Camera RAW (read via dcraw/ImageMagick):
@@ -131,6 +132,8 @@ func extToImgFormat(ext string) string {
 		return "tiff"
 	case ".webp":
 		return "webp"
+	case ".svg":
+		return "svg"
 	case ".heic", ".heif":
 		return "heic"
 	case ".ppm", ".pgm", ".pbm", ".pnm":
@@ -229,6 +232,9 @@ func encodeImage(path, format string, img image.Image) error {
 		return tiff.Encode(f, img, nil)
 	case "ppm":
 		return encodePPM(f, img)
+	case "svg":
+		f.Close()
+		return rasterToSVG(path, img)
 	case "webp":
 		return fmt.Errorf("WebP encoding is not supported in pure Go.\n" +
 			"Workaround: convert to PNG first, then use cwebp:\n" +
@@ -372,6 +378,70 @@ func encodePPM(w *os.File, img image.Image) error {
 		if _, err := w.Write(buf); err != nil {
 			return err
 		}
+	}
+	return nil
+}
+
+// rasterToSVG traces a raster image to SVG using potrace or ImageMagick.
+// Potrace requires BMP input, so we convert to BMP first if needed.
+func rasterToSVG(outputPath string, img image.Image) error {
+	// Try potrace first (best quality tracing)
+	if potrace, err := exec.LookPath("potrace"); err == nil {
+		return traceWithPotrace(potrace, outputPath, img)
+	}
+
+	// Try ImageMagick
+	for _, magick := range []string{"magick", "convert"} {
+		if m, err := exec.LookPath(magick); err == nil {
+			return traceWithMagick(m, outputPath, img)
+		}
+	}
+
+	return fmt.Errorf("no raster-to-SVG tracer found. Install one of:\n" +
+		"  potrace:      brew install potrace (best quality)\n" +
+		"  ImageMagick:  brew install imagemagick")
+}
+
+func traceWithPotrace(potracePath, outputPath string, img image.Image) error {
+	// potrace requires BMP input
+	tmpBMP, err := os.CreateTemp("", "opengyver-*.bmp")
+	if err != nil {
+		return err
+	}
+	tmpBMPPath := tmpBMP.Name()
+	defer os.Remove(tmpBMPPath)
+
+	if err := bmp.Encode(tmpBMP, img); err != nil {
+		tmpBMP.Close()
+		return fmt.Errorf("encoding temp BMP: %w", err)
+	}
+	tmpBMP.Close()
+
+	cmd := exec.Command(potracePath, tmpBMPPath, "-s", "-o", outputPath)
+	if out, err := cmd.CombinedOutput(); err != nil {
+		return fmt.Errorf("potrace error: %s\n%s", err, string(out))
+	}
+	return nil
+}
+
+func traceWithMagick(magickPath, outputPath string, img image.Image) error {
+	// Write to temp PNG, then convert to SVG via ImageMagick
+	tmpPNG, err := os.CreateTemp("", "opengyver-*.png")
+	if err != nil {
+		return err
+	}
+	tmpPNGPath := tmpPNG.Name()
+	defer os.Remove(tmpPNGPath)
+
+	if err := png.Encode(tmpPNG, img); err != nil {
+		tmpPNG.Close()
+		return err
+	}
+	tmpPNG.Close()
+
+	cmd := exec.Command(magickPath, tmpPNGPath, outputPath)
+	if out, err := cmd.CombinedOutput(); err != nil {
+		return fmt.Errorf("ImageMagick error: %s\n%s", err, string(out))
 	}
 	return nil
 }

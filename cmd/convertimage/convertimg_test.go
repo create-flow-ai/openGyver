@@ -193,6 +193,7 @@ func TestExtToImgFormat(t *testing.T) {
 		".pnm":  "ppm",
 		".tga":  "tga",
 		".pcx":  "pcx",
+		".svg":  "svg",
 		".cr2":  "raw",
 		".nef":  "raw",
 		".arw":  "raw",
@@ -551,6 +552,50 @@ func TestPNGToPPM(t *testing.T) {
 	data, _ := os.ReadFile(dst)
 	if !strings.HasPrefix(string(data), "P6") {
 		t.Error("PPM file should start with P6 header")
+	}
+}
+
+func TestPPM_ContentValid(t *testing.T) {
+	dir := tempDir(t)
+	src := filepath.Join(dir, "test.png")
+	dst := filepath.Join(dir, "test.ppm")
+	saveTestPNG(t, src)
+
+	runConversion(src, dst, "", 0, 0)
+
+	data, _ := os.ReadFile(dst)
+	content := string(data)
+	if !strings.HasPrefix(content, "P6\n64 64\n255\n") {
+		t.Errorf("PPM header wrong, got prefix: %q", content[:min(30, len(content))])
+	}
+	// P6 header + 64*64*3 bytes of pixel data
+	expectedSize := len("P6\n64 64\n255\n") + 64*64*3
+	if len(data) != expectedSize {
+		t.Errorf("PPM size: got %d, want %d", len(data), expectedSize)
+	}
+}
+
+func TestPNGToSVG_RequiresExternalTool(t *testing.T) {
+	dir := tempDir(t)
+	src := filepath.Join(dir, "test.png")
+	dst := filepath.Join(dir, "test.svg")
+	saveTestPNG(t, src)
+
+	err := runConversion(src, dst, "", 0, 0)
+	// Will succeed if potrace or ImageMagick is installed, error otherwise
+	if err != nil {
+		if !strings.Contains(err.Error(), "no raster-to-SVG tracer found") &&
+			!strings.Contains(err.Error(), "potrace") &&
+			!strings.Contains(err.Error(), "ImageMagick") {
+			t.Errorf("unexpected error: %v", err)
+		}
+		t.Logf("SVG conversion not available (expected in CI): %v", err)
+	} else {
+		// Verify the SVG was created
+		data, _ := os.ReadFile(dst)
+		if !strings.Contains(string(data), "<svg") && !strings.Contains(string(data), "<?xml") {
+			t.Error("output doesn't look like SVG")
+		}
 	}
 }
 
