@@ -32,6 +32,7 @@ Designed to be used standalone, or hooked into CI/CD pipelines, shell scripts, a
   - [encode — Encoding & Decoding](#encode)
   - [epoch — Unix Epoch Utilities](#epoch)
   - [finance — Financial Calculators](#finance)
+  - [format — HTML, XML, CSS, SQL Formatter](#format)
   - [generate — Password, Key & ID Generators](#generate)
   - [geo — Geolocation Tools](#geo)
   - [hash — Hashing & Checksums](#hash)
@@ -47,6 +48,7 @@ Designed to be used standalone, or hooked into CI/CD pipelines, shell scripts, a
   - [toGif — Images to Animated GIF](#togif)
   - [toIco — Image to ICO](#toico)
   - [uuid — UUID Generator](#uuid)
+  - [validate — HTML, CSV, XML, YAML, TOML Validator](#validate)
 - [Plugin Architecture](#plugin-architecture)
 - [Building from Source](#building-from-source)
 - [Cross-Compilation](#cross-compilation)
@@ -960,6 +962,33 @@ openGyver finance margin --cost 40 --revenue 100 -j
 
 ---
 
+### format
+
+Format, beautify, and minify HTML, XML, CSS, and SQL.
+
+#### Subcommands
+
+| Subcommand | Flags | Description |
+|------------|-------|-------------|
+| `html`     | `--indent` (2), `--minify` | HTML beautifier/minifier. Proper indentation, handles self-closing tags. |
+| `xml`      | `--indent` (2), `--minify` | XML formatter/minifier. |
+| `css`      | `--indent` (2), `--minify` | CSS formatter — one property per line, proper indentation. Minify strips all whitespace. |
+| `sql`      | `--indent` (2), `--minify` | SQL formatter — uppercase keywords, newlines before clauses. Minify collapses to one line. |
+
+All accept input as argument or `--file`/`-f`. Output to stdout or `--output`/`-o`. All support `--json`/`-j`.
+
+```bash
+openGyver format html "<div><p>hello</p></div>"
+openGyver format html --minify --file index.html -o index.min.html
+openGyver format xml '<root><item id="1"/></root>'
+openGyver format css "body{color:red;margin:0}"
+openGyver format css --minify --file styles.css
+openGyver format sql "select * from users where id = 1 order by name"
+openGyver format sql --minify "SELECT * FROM users WHERE active = 1"
+```
+
+---
+
 ### generate
 
 Random generators — passwords, keys, IDs, OTP secrets.
@@ -1690,6 +1719,36 @@ openGyver uuid --version 6                # time-sorted v6
 openGyver uuid --count 5                  # generate 5 UUIDs
 openGyver uuid --version 6 --count 10     # 10 time-sorted UUIDs
 openGyver uuid --uppercase                # A1B2C3D4-E5F6-...
+```
+
+---
+
+### validate
+
+Validate HTML, CSV, XML, YAML, and TOML data for correctness.
+
+#### Subcommands
+
+| Subcommand | Description |
+|------------|-------------|
+| `html`     | Check for unclosed/mismatched tags, missing doctype, missing alt on img, duplicate IDs |
+| `csv`      | Check for consistent column count, proper quoting |
+| `xml`      | Check XML well-formedness |
+| `yaml`     | Check YAML syntax |
+| `toml`     | Check TOML syntax |
+
+All accept input as argument or `--file`/`-f`. Output "valid" on success or list of errors. `--json`/`-j` outputs `{"valid":true/false,"errors":[...]}`.
+
+Note: JSON validation is available via `openGyver json validate`.
+
+```bash
+openGyver validate html --file index.html
+openGyver validate html '<img src="x">'           # warns: missing alt
+openGyver validate csv --file data.csv
+openGyver validate xml '<root><item/></root>'
+openGyver validate yaml --file config.yml
+openGyver validate toml --file pyproject.toml
+openGyver validate yaml --file config.yml -j      # JSON output
 ```
 
 ---

@@ -41,6 +41,10 @@ import (
 	_ "github.com/mj/opengyver/cmd/togif"
 	_ "github.com/mj/opengyver/cmd/toico"
 	_ "github.com/mj/opengyver/cmd/uuid"
+	_ "github.com/mj/opengyver/cmd/validate"
+
+	// Also registered but loaded via different package names:
+	_ "github.com/mj/opengyver/cmd/format"
 )
 
 // Set by GoReleaser via ldflags.
