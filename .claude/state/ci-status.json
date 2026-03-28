@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-03-28T19:56:40Z",
-  "trigger_command": "git add docs/assets/mcgyver.jpg README.md && git commit -m \"Add logo image to README and move to docs/assets/\\n\\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>\" && git push 2>&1 | tail -3",
+  "timestamp": "2026-03-28T20:02:54Z",
+  "trigger_command": "git add -A && git commit -m \"Fix Go version compatibility for CI — downgrade deps to Go 1.23\\n\\npdfcpu v0.11.1 required Go 1.24+, golang.org/x/image v0.38.0\\nrequired Go 1.25+. Downgraded to pdfcpu v0.9.1, x/image v0.23.0,\\nx/net v0.34.0, x/crypto v0.32.0, excelize v2.9.0.\\nSet go.mod to go 1.23.5 (matches CI runner).\\n\\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>\" && git push 2>&1 | tail -3",
   "status": "completed",
-  "conclusion": "success"
+  "conclusion": "failure"
 }
