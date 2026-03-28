@@ -81,6 +81,8 @@ openGyver convertFile data.csv -o data.xlsx -q # silent
 | [convertVideo](docs/convertVideo.md) | Video format conversion (37 formats via ffmpeg) | [details](docs/convertVideo.md) |
 | [toGif](docs/toGif.md) | Create animated GIF from images | [details](docs/toGif.md) |
 | [toIco](docs/toIco.md) | Create Windows ICO from images | [details](docs/toIco.md) |
+| [trimVideo](docs/trimVideo.md) | Trim video to time range (stream copy or re-encode) | [details](docs/trimVideo.md) |
+| [extractFrame](docs/extractFrame.md) | Extract frames from animated GIF/APNG | [details](docs/extractFrame.md) |
 
 ### Encoding & Hashing
 

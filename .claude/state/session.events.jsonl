@@ -139,3 +139,14 @@ Trim videos by start/end time or duration. Default: stream copy
 {"id":"event-000121","type":"tool.write","ts":"2026-03-28T20:16:02Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/cmd/extractframe/extractframe.go"}}
 {"id":"event-000122","type":"tool.edit","ts":"2026-03-28T20:16:14Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/main.go"}}
 {"id":"event-000123","type":"tool.bash","ts":"2026-03-28T20:16:28Z","state":"stopped","data":{"command":"go build -o openGyver . 2>&1 | grep "error" | grep -v "npm\|nvm\|SyntaxError" | head -3 && ./openGyver extractFrame --help 2>&1 | head -15"}}
+{"id":"event-000124","type":"tool.bash","ts":"2026-03-28T20:16:44Z","state":"stopped","data":{"command":"git add -A && git commit -m "Add extractFrame command — extract frames from animated GIF/APNG
+
+Extract a specific frame or all frames from animated GIFs as PNG.
+Pure Go for GIF (no external tools). AP"}}
+{"id":"event-000125","type":"tool.bash","ts":"2026-03-28T20:21:16Z","state":"stopped","data":{"command":"for cmd in trimvideo extractframe; do echo "=== $cmd ===" && ls /Users/mj/work/openGyver/cmd/$cmd/*_test.go 2>/dev/null || echo "NO TESTS" && ls /Users/mj/work/openGyver/docs/$cmd.md /Users/mj/work/op"}}
+{"id":"event-000126","type":"tool.write","ts":"2026-03-28T20:21:44Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/cmd/trimvideo/trimvideo_test.go"}}
+{"id":"event-000127","type":"tool.write","ts":"2026-03-28T20:22:05Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/cmd/extractframe/extractframe_test.go"}}
+{"id":"event-000127","type":"tool.write","ts":"2026-03-28T20:22:31Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/docs/trimVideo.md"}}
+{"id":"event-000128","type":"tool.write","ts":"2026-03-28T20:22:42Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/docs/extractFrame.md"}}
+{"id":"event-000129","type":"tool.edit","ts":"2026-03-28T20:22:56Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/README.md"}}
+{"id":"event-000130","type":"tool.bash","ts":"2026-03-28T20:23:12Z","state":"stopped","data":{"command":"go test ./cmd/trimvideo/ ./cmd/extractframe/ -count=1 -v 2>&1 | grep -E "PASS|FAIL|^ok" | head -20"}}
