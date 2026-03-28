@@ -38,6 +38,8 @@ openGyver format sql "select * from users"      # SQL formatting
 openGyver color convert "#ff5733" --to rgb      # color conversion
 openGyver finance loan --principal 300000 --rate 6.5 --years 30
 openGyver testdata person --count 5 -j          # fake test data
+openGyver weather "New York"                    # current weather
+openGyver weather Tokyo --date 2024-12-25       # historical weather
 ```
 
 ## Output Modes
@@ -115,6 +117,7 @@ openGyver convertFile data.csv -o data.xlsx -q # silent
 | Command | Description | Docs |
 |---------|-------------|------|
 | [stock](docs/stock.md) | Stock ticker lookup from 35+ global markets (Yahoo Finance, no API key) | [details](docs/stock.md) |
+| [weather](docs/weather.md) | Weather: current, forecast (16 days), historical (back to 1940) for any city | [details](docs/weather.md) |
 | [network](docs/network.md) | DNS lookup, public IP, WHOIS, CIDR calculator, URL parser, HTTP status codes | [details](docs/network.md) |
 | [color](docs/color.md) | Color convert (hex/RGB/HSL/CMYK), WCAG contrast, palette, name lookup | [details](docs/color.md) |
 | [number](docs/number.md) | Number base conversion (2-36), Roman numerals, IEEE 754 | [details](docs/number.md) |
