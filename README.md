@@ -1,6 +1,10 @@
-# openGyver
+# OpenGyver
 
-A Swiss-army-knife CLI tool with 37 commands and 140+ subcommands for everyday conversions, encoding, hashing, generation, formatting, validation, and more. Built in Go for zero-dependency, single-binary distribution across Linux, macOS, and Windows.
+<p align="center">
+  <img src="docs/assets/mcgyver.jpg" alt="openGyver" width="400">
+</p>
+
+A Swiss-army-knife CLI tool with 47 commands and 180+ subcommands for everyday conversions, encoding, hashing, generation, formatting, validation, and more. Built in Go for zero-dependency, single-binary distribution across Linux, macOS, and Windows.
 
 Designed to be used standalone, or hooked into CI/CD pipelines, shell scripts, and AI agents.
 
