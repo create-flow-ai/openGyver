@@ -17,9 +17,11 @@ var (
 )
 
 var supportedFormats = map[string]bool{
-	"ai": true, "cdr": true, "cgm": true, "emf": true, "eps": true,
-	"pdf": true, "png": true, "jpg": true, "svg": true, "svgz": true,
-	"vsd": true, "wmf": true, "ps": true,
+	"ai": true, "ccx": true, "cdr": true, "cdt": true, "cgm": true,
+	"cmx": true, "dst": true, "emf": true, "eps": true, "exp": true,
+	"fig": true, "pdf": true, "pes": true, "plt": true, "png": true,
+	"jpg": true, "ps": true, "sk": true, "sk1": true, "svg": true,
+	"svgz": true, "vsd": true, "wmf": true,
 }
 
 var convertVectorCmd = &cobra.Command{
@@ -34,18 +36,21 @@ REQUIRES (one of):
   rsvg-convert:  brew install librsvg  (macOS) / apt install librsvg2-bin (Linux)
   inkscape:      brew install inkscape (macOS) / apt install inkscape (Linux)
 
-SUPPORTED FORMATS:
+SUPPORTED FORMATS (23):
 
   SVG, SVGZ    Scalable Vector Graphics
   EPS          Encapsulated PostScript
-  PDF          Portable Document Format
-  PS           PostScript
-  EMF          Enhanced Metafile
-  WMF          Windows Metafile
+  PDF, PS      Page layout
+  EMF, WMF     Windows Metafile formats
   AI           Adobe Illustrator
-  CDR          CorelDRAW
+  CDR, CDT     CorelDRAW
+  CCX, CMX     Corel formats
   CGM          Computer Graphics Metafile
   VSD          Microsoft Visio
+  FIG          Xfig
+  PLT          HPGL Plotter
+  DST, PES, EXP  Embroidery formats
+  SK, SK1      Sketch
 
   Raster output: PNG, JPG (rasterize vector to image)
 

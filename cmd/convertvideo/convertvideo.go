@@ -20,12 +20,14 @@ var (
 )
 
 var supportedFormats = map[string]bool{
-	"3g2": true, "3gp": true, "3gpp": true, "avi": true, "cavs": true,
-	"dv": true, "dvr": true, "flv": true, "m2ts": true, "m4v": true,
-	"mkv": true, "mod": true, "mov": true, "mp4": true, "mpeg": true,
-	"mpg": true, "mts": true, "mxf": true, "ogg": true, "ogv": true,
-	"rm": true, "rmvb": true, "swf": true, "ts": true, "vob": true,
-	"webm": true, "wmv": true, "wtv": true,
+	"3g2": true, "3gp": true, "3gpp": true, "asf": true, "avi": true,
+	"av1": true, "cavs": true, "divx": true, "dv": true, "dvr": true,
+	"f4v": true, "flv": true, "hevc": true, "m2ts": true, "m2v": true,
+	"m4v": true, "mjpeg": true, "mkv": true, "mod": true, "mov": true,
+	"mp4": true, "mpeg": true, "mpg": true, "mts": true, "mxf": true,
+	"ogg": true, "ogv": true, "rm": true, "rmvb": true, "swf": true,
+	"tod": true, "ts": true, "vob": true, "webm": true, "wmv": true,
+	"wtv": true, "xvid": true,
 }
 
 var convertVideoCmd = &cobra.Command{
@@ -38,11 +40,12 @@ REQUIRES: ffmpeg must be installed and available in PATH.
   Linux:   apt install ffmpeg / dnf install ffmpeg
   Windows: https://ffmpeg.org/download.html
 
-SUPPORTED FORMATS:
+SUPPORTED FORMATS (37):
 
-  3G2, 3GP, 3GPP, AVI, CAVS, DV, DVR, FLV, M2TS, M4V, MKV, MOD,
-  MOV, MP4, MPEG, MPG, MTS, MXF, OGG, OGV, RM, RMVB, SWF, TS,
-  VOB, WEBM, WMV, WTV
+  3G2, 3GP, 3GPP, ASF, AV1, AVI, CAVS, DIVX, DV, DVR, F4V, FLV,
+  HEVC, M2TS, M2V, M4V, MJPEG, MKV, MOD, MOV, MP4, MPEG, MPG,
+  MTS, MXF, OGG, OGV, RM, RMVB, SWF, TOD, TS, VOB, WEBM, WMV,
+  WTV, XVID
 
 Examples:
   openGyver convertVideo input.avi -o output.mp4

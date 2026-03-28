@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 
@@ -26,16 +27,17 @@ SUBCOMMANDS:
   create    Create an archive from files/directories
   extract   Extract an archive to a directory
 
-SUPPORTED FORMATS (pure Go — no external tools):
+SUPPORTED FORMATS:
 
-  ZIP       .zip
-  TAR       .tar
-  TAR.GZ    .tar.gz, .tgz
-  TAR.BZ2   .tar.bz2, .tbz2 (extract only)
+  Pure Go (no external tools):
+  ZIP       .zip               Create + Extract
+  TAR       .tar               Create + Extract
+  TAR.GZ    .tar.gz, .tgz      Create + Extract
 
-For other formats (7z, rar, etc.), use system tools:
-  7z:   brew install p7zip    →  7z x file.7z
-  RAR:  brew install unrar    →  unrar x file.rar
+  Via external tools (auto-detected):
+  7Z        .7z                Create + Extract (requires: p7zip / 7z)
+  RAR       .rar               Extract only (requires: unrar)
+  BZ2       .tar.bz2, .tbz2    Create + Extract (requires: bzip2)
 
 Examples:
   openGyver archive create -o backup.zip file1.txt file2.txt dir/
@@ -76,8 +78,12 @@ func runCreate(c *cobra.Command, args []string) error {
 		return createTarGz(output, args)
 	case strings.HasSuffix(lower, ".tar"):
 		return createTar(output, args)
+	case strings.HasSuffix(lower, ".tar.bz2") || strings.HasSuffix(lower, ".tbz2"):
+		return createTarBz2(output, args)
+	case strings.HasSuffix(lower, ".7z"):
+		return create7z(output, args)
 	default:
-		return fmt.Errorf("unsupported archive format: %s\nSupported: .zip, .tar, .tar.gz, .tgz", filepath.Ext(output))
+		return fmt.Errorf("unsupported archive format: %s\nSupported: .zip, .tar, .tar.gz, .tgz, .tar.bz2, .7z", filepath.Ext(output))
 	}
 }
 
@@ -115,8 +121,14 @@ func runExtract(c *cobra.Command, args []string) error {
 		return extractTarGz(archivePath, dest)
 	case strings.HasSuffix(lower, ".tar"):
 		return extractTar(archivePath, dest)
+	case strings.HasSuffix(lower, ".tar.bz2") || strings.HasSuffix(lower, ".tbz2"):
+		return extractTarBz2(archivePath, dest)
+	case strings.HasSuffix(lower, ".7z"):
+		return extract7z(archivePath, dest)
+	case strings.HasSuffix(lower, ".rar"):
+		return extractRar(archivePath, dest)
 	default:
-		return fmt.Errorf("unsupported archive format: %s\nSupported: .zip, .tar, .tar.gz, .tgz", filepath.Ext(archivePath))
+		return fmt.Errorf("unsupported archive format: %s\nSupported: .zip, .tar, .tar.gz, .tgz, .tar.bz2, .7z, .rar", filepath.Ext(archivePath))
 	}
 }
 
@@ -363,6 +375,101 @@ func readTar(r io.Reader, dest string) (int, error) {
 	}
 
 	return count, nil
+}
+
+// --- TAR.BZ2 (via bzip2 command) ---
+
+func createTarBz2(outPath string, sources []string) error {
+	if _, err := exec.LookPath("bzip2"); err != nil {
+		return fmt.Errorf("bzip2 not found. Install it: apt install bzip2 / brew install bzip2")
+	}
+	tarPath := strings.TrimSuffix(strings.TrimSuffix(outPath, ".bz2"), ".tbz2") + ".tar"
+	if err := createTar(tarPath, sources); err != nil {
+		return err
+	}
+	defer os.Remove(tarPath)
+	cmd := exec.Command("bzip2", tarPath)
+	if out, err := cmd.CombinedOutput(); err != nil {
+		return fmt.Errorf("bzip2 error: %s\n%s", err, string(out))
+	}
+	// bzip2 creates tarPath.bz2
+	return os.Rename(tarPath+".bz2", outPath)
+}
+
+func extractTarBz2(archivePath, dest string) error {
+	if _, err := exec.LookPath("bzip2"); err != nil {
+		return fmt.Errorf("bzip2 not found. Install it: apt install bzip2 / brew install bzip2")
+	}
+	cmd := exec.Command("bzip2", "-dkc", archivePath)
+	tarData, err := cmd.Output()
+	if err != nil {
+		return fmt.Errorf("bzip2 decompress error: %w", err)
+	}
+	count, err := readTar(strings.NewReader(string(tarData)), dest)
+	if err != nil {
+		return err
+	}
+	fmt.Printf("Extracted %s → %s (%d files)\n", archivePath, dest, count)
+	return nil
+}
+
+// --- 7Z (via 7z command) ---
+
+func create7z(outPath string, sources []string) error {
+	sz, err := find7z()
+	if err != nil {
+		return err
+	}
+	args := append([]string{"a", outPath}, sources...)
+	cmd := exec.Command(sz, args...)
+	if out, err := cmd.CombinedOutput(); err != nil {
+		return fmt.Errorf("7z error: %s\n%s", err, string(out))
+	}
+	fmt.Printf("Created %s\n", outPath)
+	return nil
+}
+
+func extract7z(archivePath, dest string) error {
+	sz, err := find7z()
+	if err != nil {
+		return err
+	}
+	cmd := exec.Command(sz, "x", archivePath, "-o"+dest, "-y")
+	if out, err := cmd.CombinedOutput(); err != nil {
+		return fmt.Errorf("7z error: %s\n%s", err, string(out))
+	}
+	fmt.Printf("Extracted %s → %s\n", archivePath, dest)
+	return nil
+}
+
+func find7z() (string, error) {
+	for _, name := range []string{"7z", "7za", "7zz"} {
+		if p, err := exec.LookPath(name); err == nil {
+			return p, nil
+		}
+	}
+	return "", fmt.Errorf("7z not found. Install it:\n" +
+		"  macOS:   brew install p7zip\n" +
+		"  Linux:   apt install p7zip-full\n" +
+		"  Windows: https://7-zip.org")
+}
+
+// --- RAR (extract only, via unrar) ---
+
+func extractRar(archivePath, dest string) error {
+	unrar, err := exec.LookPath("unrar")
+	if err != nil {
+		return fmt.Errorf("unrar not found. Install it:\n" +
+			"  macOS:   brew install unrar\n" +
+			"  Linux:   apt install unrar\n" +
+			"  Windows: https://www.rarlab.com/download.htm")
+	}
+	cmd := exec.Command(unrar, "x", "-y", archivePath, dest+"/")
+	if out, err := cmd.CombinedOutput(); err != nil {
+		return fmt.Errorf("unrar error: %s\n%s", err, string(out))
+	}
+	fmt.Printf("Extracted %s → %s\n", archivePath, dest)
+	return nil
 }
 
 func init() {

@@ -32,7 +32,10 @@ func TestConvertVideoCmd_Flags(t *testing.T) {
 }
 
 func TestVideoSupportedFormats(t *testing.T) {
-	expected := []string{"mp4", "mkv", "avi", "mov", "webm", "flv", "wmv", "mpeg", "ts", "m4v"}
+	expected := []string{
+		"mp4", "mkv", "avi", "mov", "webm", "flv", "wmv", "mpeg", "ts", "m4v",
+		"av1", "hevc", "divx", "xvid", "f4v", "asf", "m2v", "mjpeg", "tod",
+	}
 	for _, fmt := range expected {
 		if !supportedFormats[fmt] {
 			t.Errorf("format %s should be supported", fmt)

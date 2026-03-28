@@ -32,7 +32,10 @@ func TestConvertVectorCmd_Flags(t *testing.T) {
 }
 
 func TestVectorSupportedFormats(t *testing.T) {
-	expected := []string{"svg", "svgz", "eps", "pdf", "emf", "wmf", "ai", "cdr", "png", "jpg"}
+	expected := []string{
+		"svg", "svgz", "eps", "pdf", "emf", "wmf", "ai", "cdr", "png", "jpg",
+		"ccx", "cdt", "cmx", "dst", "exp", "fig", "pes", "plt", "sk", "sk1",
+	}
 	for _, fmt := range expected {
 		if !supportedFormats[fmt] {
 			t.Errorf("format %s should be supported", fmt)

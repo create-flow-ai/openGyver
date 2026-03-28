@@ -38,7 +38,11 @@ func TestConvertAudioCmd_Flags(t *testing.T) {
 }
 
 func TestSupportedFormats(t *testing.T) {
-	expected := []string{"mp3", "wav", "flac", "aac", "ogg", "m4a", "wma", "opus"}
+	expected := []string{
+		"mp3", "wav", "flac", "aac", "ogg", "m4a", "wma", "opus",
+		"m4r", "mp2", "ra", "dts", "ape", "shn", "tta", "wv", "gsm",
+		"snd", "spx", "vox", "w64",
+	}
 	for _, fmt := range expected {
 		if !supportedFormats[fmt] {
 			t.Errorf("format %s should be supported", fmt)

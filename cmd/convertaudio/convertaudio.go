@@ -18,9 +18,12 @@ var (
 
 var supportedFormats = map[string]bool{
 	"aac": true, "ac3": true, "aif": true, "aifc": true, "aiff": true,
-	"amr": true, "au": true, "caf": true, "dss": true, "flac": true,
-	"m4a": true, "m4b": true, "mp3": true, "oga": true, "ogg": true,
-	"opus": true, "voc": true, "wav": true, "weba": true, "wma": true,
+	"amr": true, "ape": true, "au": true, "caf": true, "dss": true,
+	"dts": true, "flac": true, "gsm": true, "m4a": true, "m4b": true,
+	"m4r": true, "mp2": true, "mp3": true, "oga": true, "ogg": true,
+	"opus": true, "ra": true, "shn": true, "snd": true, "spx": true,
+	"tta": true, "voc": true, "vox": true, "wav": true, "weba": true,
+	"wma": true, "wv": true, "w64": true,
 }
 
 var convertAudioCmd = &cobra.Command{
@@ -33,10 +36,11 @@ REQUIRES: ffmpeg must be installed and available in PATH.
   Linux:   apt install ffmpeg / dnf install ffmpeg
   Windows: https://ffmpeg.org/download.html
 
-SUPPORTED FORMATS:
+SUPPORTED FORMATS (33):
 
-  AAC, AC3, AIF, AIFC, AIFF, AMR, AU, CAF, DSS, FLAC,
-  M4A, M4B, MP3, OGA, OGG, OPUS, VOC, WAV, WEBA, WMA
+  AAC, AC3, AIF, AIFC, AIFF, AMR, APE, AU, CAF, DSS, DTS,
+  FLAC, GSM, M4A, M4B, M4R, MP2, MP3, OGA, OGG, OPUS, RA,
+  SHN, SND, SPX, TTA, VOC, VOX, W64, WAV, WEBA, WMA, WV
 
 Examples:
   openGyver convertAudio song.wav -o song.mp3

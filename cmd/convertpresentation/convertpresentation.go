@@ -13,9 +13,10 @@ import (
 var output string
 
 var supportedFormats = map[string]bool{
-	"dps": true, "key": true, "odp": true, "pot": true, "potx": true,
-	"pps": true, "ppsx": true, "ppt": true, "pptm": true, "pptx": true,
-	"pdf": true, "png": true, "jpg": true, "svg": true, "html": true,
+	"dps": true, "key": true, "odp": true, "pot": true, "potm": true,
+	"potx": true, "pps": true, "ppsm": true, "ppsx": true, "ppt": true,
+	"pptm": true, "pptx": true, "pdf": true, "png": true, "jpg": true,
+	"svg": true, "html": true,
 }
 
 var convertPresentationCmd = &cobra.Command{

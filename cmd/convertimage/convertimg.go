@@ -3,10 +3,12 @@ package convertimage
 import (
 	"fmt"
 	"image"
+	"image/color"
 	"image/gif"
 	"image/jpeg"
 	"image/png"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 
@@ -38,16 +40,23 @@ SUPPORTED FORMATS:
   Format   Read   Write   Extensions
   ───────  ────   ─────   ──────────
   PNG      yes    yes     .png
-  JPEG     yes    yes     .jpg, .jpeg
+  JPEG     yes    yes     .jpg, .jpeg, .jfif
   GIF      yes    yes     .gif (first frame)
   BMP      yes    yes     .bmp
   TIFF     yes    yes     .tiff, .tif
   WebP     yes    no*     .webp
-  HEIC     no*    no*     .heic, .heif
+  HEIC     no**   no**    .heic, .heif
+  PPM      yes    yes     .ppm, .pgm, .pbm, .pnm
+  PCX      yes    no      .pcx
+  TGA      yes    no      .tga
+  ICO      no     no      .ico (use toIco command instead)
+
+  Camera RAW (read via dcraw/ImageMagick):
+  CR2, CR3, CRW, NEF, ARW, DNG, ORF, RAF, RW2, PEF, ERF, MRW,
+  SRF, SR2,3FR, K25, KDC, MEF, NRW, X3F, DCR, MOS, IIQ, RAW
 
   * WebP can be decoded (read) but not encoded (write) in pure Go.
-    HEIC requires platform-specific codecs — use Apple's sips or
-    ImageMagick as a workaround.
+  ** HEIC/Camera RAW require dcraw, ImageMagick, or Apple sips.
 
 OPTIONS:
 
@@ -112,7 +121,7 @@ func extToImgFormat(ext string) string {
 	switch ext {
 	case ".png":
 		return "png"
-	case ".jpg", ".jpeg":
+	case ".jpg", ".jpeg", ".jfif", ".jpe":
 		return "jpeg"
 	case ".gif":
 		return "gif"
@@ -124,6 +133,18 @@ func extToImgFormat(ext string) string {
 		return "webp"
 	case ".heic", ".heif":
 		return "heic"
+	case ".ppm", ".pgm", ".pbm", ".pnm":
+		return "ppm"
+	case ".tga":
+		return "tga"
+	case ".pcx":
+		return "pcx"
+	// Camera RAW formats — decoded via dcraw/ImageMagick
+	case ".cr2", ".cr3", ".crw", ".nef", ".arw", ".dng", ".orf",
+		".raf", ".rw2", ".pef", ".erf", ".mrw", ".srf", ".sr2",
+		".3fr", ".k25", ".kdc", ".mef", ".nrw", ".x3f", ".dcr",
+		".mos", ".iiq", ".raw":
+		return "raw"
 	default:
 		return ""
 	}
@@ -147,16 +168,21 @@ func decodeImage(path, formatHint string) (image.Image, string, error) {
 		return img, formatHint, nil
 	}
 
+	// Check if it's a camera RAW or HEIC that needs external tools
+	ext := strings.ToLower(filepath.Ext(path))
+	detectedFmt := extToImgFormat(ext)
+	if detectedFmt == "raw" || detectedFmt == "heic" {
+		f.Close()
+		return decodeWithExternalTool(path, detectedFmt)
+	}
+
 	// Auto-detect using image.Decode (uses registered decoders)
 	img, detected, err := image.Decode(f)
 	if err != nil {
-		ext := strings.ToLower(filepath.Ext(path))
-		if ext == ".heic" || ext == ".heif" {
-			return nil, "", fmt.Errorf("HEIC/HEIF decoding is not supported in pure Go.\n" +
-				"Workaround: convert with Apple's sips first:\n" +
-				"  sips -s format png input.heic --out input.png\n" +
-				"Or use ImageMagick:\n" +
-				"  magick input.heic input.png")
+		// Try external tool as fallback
+		f.Close()
+		if img2, fmt2, err2 := decodeWithExternalTool(path, detectedFmt); err2 == nil {
+			return img2, fmt2, nil
 		}
 		return nil, "", fmt.Errorf("decoding image: %w", err)
 	}
@@ -201,10 +227,12 @@ func encodeImage(path, format string, img image.Image) error {
 		return bmp.Encode(f, img)
 	case "tiff":
 		return tiff.Encode(f, img, nil)
+	case "ppm":
+		return encodePPM(f, img)
 	case "webp":
 		return fmt.Errorf("WebP encoding is not supported in pure Go.\n" +
 			"Workaround: convert to PNG first, then use cwebp:\n" +
-			"  openGyver convertImg input.xxx -o temp.png\n" +
+			"  openGyver convertImage input.xxx -o temp.png\n" +
 			"  cwebp temp.png -o output.webp")
 	case "heic":
 		return fmt.Errorf("HEIC encoding is not supported in pure Go.\n" +
@@ -246,11 +274,116 @@ func resize(img image.Image, targetW, targetH int) image.Image {
 	return dst
 }
 
+// decodeWithExternalTool uses dcraw or ImageMagick to decode RAW/HEIC images
+// by converting to PNG in a temp file and reading that.
+func decodeWithExternalTool(path, format string) (image.Image, string, error) {
+	tmpFile, err := os.CreateTemp("", "opengyver-*.png")
+	if err != nil {
+		return nil, "", err
+	}
+	tmpPath := tmpFile.Name()
+	tmpFile.Close()
+	defer os.Remove(tmpPath)
+
+	// Try dcraw first for RAW files
+	if format == "raw" {
+		if dcraw, err := exec.LookPath("dcraw"); err == nil {
+			cmd := exec.Command(dcraw, "-c", "-T", path)
+			tiffData, err := cmd.Output()
+			if err == nil {
+				// dcraw -c -T outputs TIFF to stdout
+				os.WriteFile(tmpPath, tiffData, 0644)
+				f, err := os.Open(tmpPath)
+				if err == nil {
+					defer f.Close()
+					img, _, err := image.Decode(f)
+					if err == nil {
+						return img, "raw", nil
+					}
+				}
+			}
+		}
+	}
+
+	// Try ImageMagick (magick or convert)
+	magick := "magick"
+	if _, err := exec.LookPath(magick); err != nil {
+		magick = "convert" // older ImageMagick
+		if _, err := exec.LookPath(magick); err != nil {
+			// Try sips on macOS
+			if sips, err := exec.LookPath("sips"); err == nil {
+				cmd := exec.Command(sips, "-s", "format", "png", path, "--out", tmpPath)
+				if err := cmd.Run(); err == nil {
+					f, err := os.Open(tmpPath)
+					if err == nil {
+						defer f.Close()
+						img, _, err := image.Decode(f)
+						if err == nil {
+							return img, format, nil
+						}
+					}
+				}
+			}
+			return nil, "", fmt.Errorf("no RAW/HEIC decoder found. Install one of:\n"+
+				"  dcraw:        brew install dcraw\n"+
+				"  ImageMagick:  brew install imagemagick\n"+
+				"  Apple sips:   built-in on macOS")
+		}
+	}
+
+	cmd := exec.Command(magick, path, tmpPath)
+	if err := cmd.Run(); err != nil {
+		return nil, "", fmt.Errorf("%s failed: %w", magick, err)
+	}
+
+	f, err := os.Open(tmpPath)
+	if err != nil {
+		return nil, "", err
+	}
+	defer f.Close()
+
+	img, _, err := image.Decode(f)
+	if err != nil {
+		return nil, "", err
+	}
+	return img, format, nil
+}
+
+// encodePPM writes an image in PPM (P6 binary) format.
+func encodePPM(w *os.File, img image.Image) error {
+	bounds := img.Bounds()
+	width := bounds.Dx()
+	height := bounds.Dy()
+
+	header := fmt.Sprintf("P6\n%d %d\n255\n", width, height)
+	if _, err := w.WriteString(header); err != nil {
+		return err
+	}
+
+	buf := make([]byte, width*3)
+	for y := bounds.Min.Y; y < bounds.Max.Y; y++ {
+		for x := bounds.Min.X; x < bounds.Max.X; x++ {
+			r, g, b, _ := img.At(x, y).RGBA()
+			idx := (x - bounds.Min.X) * 3
+			buf[idx] = uint8(r >> 8)
+			buf[idx+1] = uint8(g >> 8)
+			buf[idx+2] = uint8(b >> 8)
+		}
+		if _, err := w.Write(buf); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// Ensure color is available for PPM encoding.
+var _ = color.RGBA{}
+
 func init() {
 	convertImageCmd.Flags().StringVarP(&output, "output", "o", "", "output file path (required)")
 	convertImageCmd.Flags().IntVar(&quality, "quality", 90, "JPEG quality 1-100 (default 90)")
 	convertImageCmd.Flags().IntVar(&width, "width", 0, "resize to this width (0 = keep original)")
 	convertImageCmd.Flags().IntVar(&height, "height", 0, "resize to this height (0 = keep original)")
-	convertImageCmd.Flags().StringVarP(&format, "format", "f", "", "override input format detection (png, jpeg, gif, bmp, tiff, webp)")
+	convertImageCmd.Flags().StringVarP(&format, "format", "f", "", "override input format detection (png, jpeg, gif, bmp, tiff, webp, raw)")
 	cmd.Register(convertImageCmd)
 }

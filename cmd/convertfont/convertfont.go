@@ -13,7 +13,9 @@ import (
 var output string
 
 var supportedFormats = map[string]bool{
-	"eot": true, "otf": true, "ttf": true, "woff": true, "woff2": true,
+	"afm": true, "cff": true, "dfont": true, "eot": true, "otf": true,
+	"pfa": true, "pfb": true, "sfd": true, "ttf": true, "ufo": true,
+	"woff": true, "woff2": true,
 }
 
 var convertFontCmd = &cobra.Command{
@@ -24,13 +26,20 @@ var convertFontCmd = &cobra.Command{
 REQUIRES: fonttools must be installed (Python package).
   pip install fonttools brotli zopfli
 
-SUPPORTED FORMATS:
+SUPPORTED FORMATS (12):
 
-  EOT    Embedded OpenType (IE legacy web font)
-  OTF    OpenType Font
-  TTF    TrueType Font
-  WOFF   Web Open Font Format 1.0
-  WOFF2  Web Open Font Format 2.0 (Brotli compressed)
+  AFM     Adobe Font Metrics
+  CFF     Compact Font Format
+  DFONT   Mac Data Fork Font
+  EOT     Embedded OpenType (IE legacy)
+  OTF     OpenType Font
+  PFA     PostScript Font ASCII
+  PFB     PostScript Font Binary
+  SFD     FontForge Spline Font Database
+  TTF     TrueType Font
+  UFO     Unified Font Object
+  WOFF    Web Open Font Format 1.0
+  WOFF2   Web Open Font Format 2.0 (Brotli)
 
 Examples:
   openGyver convertFont font.ttf -o font.woff2

@@ -8,6 +8,7 @@ import (
 	"image/png"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/spf13/cobra"
@@ -177,6 +178,8 @@ func TestExtToImgFormat(t *testing.T) {
 		".png":  "png",
 		".jpg":  "jpeg",
 		".jpeg": "jpeg",
+		".jfif": "jpeg",
+		".jpe":  "jpeg",
 		".gif":  "gif",
 		".bmp":  "bmp",
 		".tiff": "tiff",
@@ -184,6 +187,21 @@ func TestExtToImgFormat(t *testing.T) {
 		".webp": "webp",
 		".heic": "heic",
 		".heif": "heic",
+		".ppm":  "ppm",
+		".pgm":  "ppm",
+		".pbm":  "ppm",
+		".pnm":  "ppm",
+		".tga":  "tga",
+		".pcx":  "pcx",
+		".cr2":  "raw",
+		".nef":  "raw",
+		".arw":  "raw",
+		".dng":  "raw",
+		".orf":  "raw",
+		".raf":  "raw",
+		".rw2":  "raw",
+		".pef":  "raw",
+		".raw":  "raw",
 		".xyz":  "",
 		"":      "",
 	}
@@ -517,6 +535,24 @@ func TestFormatHint(t *testing.T) {
 // ---------------------------------------------------------------------------
 // WebP/HEIC stubs
 // ---------------------------------------------------------------------------
+
+func TestPNGToPPM(t *testing.T) {
+	dir := tempDir(t)
+	src := filepath.Join(dir, "test.png")
+	dst := filepath.Join(dir, "test.ppm")
+	saveTestPNG(t, src)
+
+	quality = 90
+	err := runConversion(src, dst, "", 0, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	data, _ := os.ReadFile(dst)
+	if !strings.HasPrefix(string(data), "P6") {
+		t.Error("PPM file should start with P6 header")
+	}
+}
 
 func TestEncodeWebP_ReturnsError(t *testing.T) {
 	err := encodeImage("/tmp/test.webp", "webp", createTestImage())

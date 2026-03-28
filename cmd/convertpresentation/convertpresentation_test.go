@@ -29,7 +29,7 @@ func TestConvertPresentationCmd_Flags(t *testing.T) {
 }
 
 func TestPresentationSupportedFormats(t *testing.T) {
-	expected := []string{"pptx", "ppt", "odp", "pdf", "key", "ppsx", "potx", "html", "png"}
+	expected := []string{"pptx", "ppt", "odp", "pdf", "key", "ppsx", "potx", "potm", "ppsm", "html", "png"}
 	for _, fmt := range expected {
 		if !supportedFormats[fmt] {
 			t.Errorf("format %s should be supported", fmt)

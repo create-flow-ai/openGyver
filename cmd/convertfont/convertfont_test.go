@@ -29,7 +29,7 @@ func TestConvertFontCmd_Flags(t *testing.T) {
 }
 
 func TestFontSupportedFormats(t *testing.T) {
-	expected := []string{"ttf", "otf", "woff", "woff2", "eot"}
+	expected := []string{"ttf", "otf", "woff", "woff2", "eot", "afm", "cff", "dfont", "pfa", "pfb", "sfd", "ufo"}
 	for _, fmt := range expected {
 		if !supportedFormats[fmt] {
 			t.Errorf("format %s should be supported", fmt)
