@@ -179,6 +179,24 @@ openGyver convertFile data.csv -o data.xlsx -q # silent
 |---------|-------------|------|
 | [archive](docs/archive.md) | Create/extract ZIP, TAR, TAR.GZ, 7Z, RAR | [details](docs/archive.md) |
 
+## Claude Code Integration
+
+openGyver is available as a Claude Code plugin with native MCP tools. Once installed, Claude can call openGyver commands directly.
+
+### Install as Claude Code Skill
+
+```bash
+# Add the marketplace
+/plugin marketplace add https://raw.githubusercontent.com/create-flow-ai/openGyver/main/plugin/marketplace.json
+
+# Install (auto-downloads binary + builds MCP server)
+/plugin install opengyver
+```
+
+This gives Claude 16 native tools: `opengyver_encode`, `opengyver_hash`, `opengyver_convert`, `opengyver_json`, `opengyver_generate`, `opengyver_color`, `opengyver_time`, `opengyver_network`, `opengyver_dataformat`, `opengyver_validate`, `opengyver_format`, `opengyver_crypto`, `opengyver_weather`, `opengyver_stock`, `opengyver_math`, and `opengyver_run` (catch-all).
+
+See [plugin/README.md](plugin/README.md) for details.
+
 ## Plugin Architecture
 
 openGyver uses a plugin-based architecture where each command is a self-contained Go package. Adding a new command requires no changes to existing code.
