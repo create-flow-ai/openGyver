@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-03-28T21:30:13Z",
-  "trigger_command": "git add plugin/marketplace.json && git commit -m \"Fix marketplace.json schema — add required name and owner fields\\n\\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>\" && git push 2>&1 | tail -3",
+  "timestamp": "2026-03-28T21:35:56Z",
+  "trigger_command": "git add -A && git commit -m \"Fix Claude Code plugin install instructions — use MCP config instead of marketplace\\n\\nMarketplace JSON format didn't match Claude Code's expected schema.\\nUpdated to direct MCP server configuration which is the standard\\napproach for custom tool integration.\\n\\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>\" && git push 2>&1 | tail -3",
   "status": "completed",
   "conclusion": "success"
 }

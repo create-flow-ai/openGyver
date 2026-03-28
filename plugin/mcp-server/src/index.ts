@@ -10,9 +10,12 @@ import {
 import { execFile } from "child_process";
 import { promisify } from "util";
 import { existsSync } from "fs";
-import { join } from "path";
+import { join, dirname } from "path";
+import { fileURLToPath } from "url";
 
 const exec = promisify(execFile);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Find openGyver binary
 function findBinary(): string {

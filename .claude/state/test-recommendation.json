@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-03-28T20:49:18Z",
-  "changed_file": "plugin/scripts/install-opengyver.js",
+  "timestamp": "2026-03-28T21:40:21Z",
+  "changed_file": "plugin/mcp-server/src/index.ts",
   "test_command": "go test ./...",
   "related_test": "",
   "recommendation": "テストの実行を推奨します"
