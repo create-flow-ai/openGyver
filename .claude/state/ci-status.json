@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-03-28T21:35:56Z",
-  "trigger_command": "git add -A && git commit -m \"Fix Claude Code plugin install instructions — use MCP config instead of marketplace\\n\\nMarketplace JSON format didn't match Claude Code's expected schema.\\nUpdated to direct MCP server configuration which is the standard\\napproach for custom tool integration.\\n\\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>\" && git push 2>&1 | tail -3",
+  "timestamp": "2026-03-28T21:41:20Z",
+  "trigger_command": "git add -A && git commit -m \"Fix MCP server ES module compatibility — use import.meta.url for __dirname\\n\\n__dirname is not available in ES modules. Use fileURLToPath(import.meta.url)\\nand dirname() to derive __dirname equivalent.\\n\\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>\" && git push 2>&1 | tail -3",
   "status": "completed",
   "conclusion": "success"
 }

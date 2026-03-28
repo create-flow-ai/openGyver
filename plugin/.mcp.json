@@ -2,8 +2,7 @@
   "mcpServers": {
     "opengyver": {
       "command": "node",
-      "args": ["mcp-server/dist/index.js"],
-      "cwd": "${PLUGIN_DIR}"
+      "args": ["${CLAUDE_PLUGIN_ROOT}/mcp-server/dist/index.js"]
     }
   }
 }
