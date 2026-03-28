@@ -1,0 +1,10 @@
+{
+  "name": "opengyver-claude-plugin",
+  "version": "1.0.0",
+  "description": "Claude Code plugin for openGyver — Swiss-army CLI for conversions, encoding, hashing, and more",
+  "private": true,
+  "scripts": {
+    "build": "cd mcp-server && npm run build",
+    "postinstall": "node scripts/install-opengyver.js && cd mcp-server && npm install && npm run build"
+  }
+}

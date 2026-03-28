@@ -150,3 +150,18 @@ Pure Go for GIF (no external tools). AP"}}
 {"id":"event-000128","type":"tool.write","ts":"2026-03-28T20:22:42Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/docs/extractFrame.md"}}
 {"id":"event-000129","type":"tool.edit","ts":"2026-03-28T20:22:56Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/README.md"}}
 {"id":"event-000130","type":"tool.bash","ts":"2026-03-28T20:23:12Z","state":"stopped","data":{"command":"go test ./cmd/trimvideo/ ./cmd/extractframe/ -count=1 -v 2>&1 | grep -E "PASS|FAIL|^ok" | head -20"}}
+{"id":"event-000131","type":"tool.bash","ts":"2026-03-28T20:23:33Z","state":"stopped","data":{"command":"git add -A && git commit -m "Add unit tests, docs, and README entries for trimVideo and extractFrame
+
+- trimvideo: 8 tests (metadata, flags, shorthands, codec logic)
+- extractframe: 12 tests (GIF fram"}}
+{"id":"event-000132","type":"tool.bash","ts":"2026-03-28T20:46:50Z","state":"stopped","data":{"command":"mkdir -p /Users/mj/work/openGyver/plugin/mcp-server/src /Users/mj/work/openGyver/plugin/skills/opengyver"}}
+{"id":"event-000133","type":"tool.write","ts":"2026-03-28T20:47:02Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/plugin/package.json"}}
+{"id":"event-000134","type":"tool.write","ts":"2026-03-28T20:47:13Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/plugin/mcp-server/package.json"}}
+{"id":"event-000135","type":"tool.write","ts":"2026-03-28T20:47:28Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/plugin/mcp-server/tsconfig.json"}}
+{"id":"event-000136","type":"tool.write","ts":"2026-03-28T20:48:39Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/plugin/mcp-server/src/index.ts"}}
+{"id":"event-000137","type":"tool.bash","ts":"2026-03-28T20:48:51Z","state":"stopped","data":{"command":"mkdir -p /Users/mj/work/openGyver/plugin/scripts"}}
+{"id":"event-000138","type":"tool.write","ts":"2026-03-28T20:49:18Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/plugin/scripts/install-opengyver.js"}}
+{"id":"event-000139","type":"tool.write","ts":"2026-03-28T20:49:28Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/plugin/.mcp.json"}}
+{"id":"event-000140","type":"tool.write","ts":"2026-03-28T20:50:01Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/plugin/skills/opengyver/SKILL.md"}}
+{"id":"event-000141","type":"tool.write","ts":"2026-03-28T20:50:12Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/plugin/marketplace.json"}}
+{"id":"event-000142","type":"tool.write","ts":"2026-03-28T20:50:34Z","state":"stopped","data":{"file_path":"/Users/mj/work/openGyver/plugin/README.md"}}

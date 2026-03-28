@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "plugins": [
+    {
+      "name": "opengyver",
+      "description": "Swiss-army CLI for conversions, encoding, hashing, generation, and 180+ utilities — as native Claude Code tools",
+      "version": "1.0.0",
+      "source": {
+        "type": "github",
+        "repo": "create-flow-ai/openGyver",
+        "path": "plugin"
+      }
+    }
+  ]
+}

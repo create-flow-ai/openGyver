@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-03-28T20:16:55Z",
-  "trigger_command": "git add -A && git commit -m \"Add extractFrame command — extract frames from animated GIF/APNG\\n\\nExtract a specific frame or all frames from animated GIFs as PNG.\\nPure Go for GIF (no external tools). APNG frame 0 via Go stdlib,\\nother APNG frames via ffmpeg fallback.\\n\\nFlags: --frame (0-indexed), --all, --output, --json, --quiet.\\n\\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>\" && git push 2>&1 | tail -3",
+  "timestamp": "2026-03-28T20:24:40Z",
+  "trigger_command": "git add -A && git commit -m \"Add unit tests, docs, and README entries for trimVideo and extractFrame\\n\\n- trimvideo: 8 tests (metadata, flags, shorthands, codec logic)\\n- extractframe: 12 tests (GIF frame extraction, all-frames, out-of-range,\\n  negative index, invalid file, APNG, unsupported format)\\n- docs/trimVideo.md and docs/extractFrame.md with full flag tables and examples\\n- README updated with both commands in Conversion Tools section\\n\\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>\" && git push 2>&1 | tail -3",
   "status": "completed",
   "conclusion": "success"
 }

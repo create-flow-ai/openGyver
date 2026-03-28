@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-03-28T20:22:05Z",
-  "changed_file": "cmd/extractframe/extractframe_test.go",
+  "timestamp": "2026-03-28T20:49:18Z",
+  "changed_file": "plugin/scripts/install-opengyver.js",
   "test_command": "go test ./...",
   "related_test": "",
   "recommendation": "テストの実行を推奨します"
