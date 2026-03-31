@@ -10,6 +10,18 @@ Designed to be used standalone, or hooked into CI/CD pipelines, shell scripts, a
 
 ## Installation
 
+### Claude Code Plugin (use openGyver as AI tools)
+
+```bash
+/plugin marketplace add https://raw.githubusercontent.com/create-flow-ai/openGyver/main/plugin/marketplace.json
+/plugin install opengyver
+/reload-plugins
+```
+
+This gives Claude 16 native MCP tools for encoding, hashing, conversion, generation, weather, stocks, and more.
+
+### CLI
+
 ```bash
 # Homebrew
 brew tap create-flow-ai/tap
